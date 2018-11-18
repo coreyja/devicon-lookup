@@ -1,5 +1,5 @@
 [package]
-name = "rust-devicon-lookup"
+name = "devicon-lookup"
 version = "0.1.0"
 authors = ["Corey Alexander <coreyja@gmail.com>"]
 
