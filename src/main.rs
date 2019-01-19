@@ -100,7 +100,6 @@ lazy_static! {
 		m.insert("ts", "");
 		m.insert("tsx", "");
 		m.insert("twig", "");
-		m.insert("txt", "e");
 		m.insert("vim", "");
 		m.insert("vim", "");
 		m.insert("vue", "﵂");
