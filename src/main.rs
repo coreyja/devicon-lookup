@@ -1,3 +1,4 @@
+use std::collections::hash_map::{Entry, HashMap};
 use std::ffi::OsStr;
 use std::io::{self, BufRead};
 use std::path::Path;
@@ -119,16 +120,35 @@ fn get_symbol_from_extension(extension: &str) -> &str {
   return symbol;
 }
 
+fn get_symbol_from_extension_with_cache<'a,'b>(extension: &'a str, cache: &'b mut HashMap<String,String>) -> String {
+  let lookup = extension.to_owned();
+  match cache.entry(lookup) {
+    Entry::Vacant(entry) => {
+      let tmp = get_symbol_from_extension(& extension).to_string();
+      entry.insert(tmp.to_owned());
+      return tmp;
+    },
+    Entry::Occupied(entry) => {
+      return entry.get().to_owned();
+    },
+
+  }
+}
+
+
 fn main() {
 	let stdin = io::stdin();
+  let mut symbol_cache: HashMap<String,String> = HashMap::new();
 	for line in stdin.lock().lines() {
 		let filename = line.unwrap();
-		let extension = get_extension_from_filename(& filename);
-		let symbol = match extension {
-			Some(ext) => get_symbol_from_extension(& ext),
-			None => DEFAULT_SYMBOL
-		};
-		println!("{} {}", symbol, filename);
+    {
+      let extension = get_extension_from_filename(& filename);
+      let symbol = match extension {
+        Some(ext) => get_symbol_from_extension_with_cache(& ext, &mut symbol_cache),
+        None => DEFAULT_SYMBOL.to_string()
+      };
+      println!("{} {}", symbol, filename);
+    }
 	}
 }
 
