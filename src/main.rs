@@ -14,7 +14,12 @@ fn get_extension_from_filename(filename: &str) -> Option<&str> {
 		.and_then(OsStr::to_str)
 }
 
+
+use std::{thread, time};
+
 fn main() {
+  thread::sleep(time::Duration::from_millis(1000));
+
 	let stdin = io::stdin();
 	for line in stdin.lock().lines() {
 		let filename = line.unwrap();

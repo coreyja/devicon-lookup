@@ -13,5 +13,6 @@ phf = "0.7.24"
 [build-dependencies]
 phf_codegen = "0.7.24"
 
-[dev_dependencies]
+[dev-dependencies]
+assert_cmd = "0.6.0"
 cargo-release = "0.11.2"
