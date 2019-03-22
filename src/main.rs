@@ -14,9 +14,6 @@ fn get_extension_from_filename(filename: &str) -> Option<&str> {
 		.and_then(OsStr::to_str)
 }
 
-
-use std::{thread, time};
-
 fn main() {
 	let stdin = io::stdin();
 	for line in stdin.lock().lines() {
