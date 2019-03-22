@@ -26,6 +26,16 @@ mod integration {
     }
 
     #[test]
+    fn calling_devicon_lookup_with_single_path_unique_icon() {
+      let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
+      cmd
+          .with_stdin()
+          .buffer("/some/cool/directories/here/test.rs")
+          .assert()
+          .stdout(" /some/cool/directories/here/test.rs\n");
+    }
+
+    #[test]
     fn calling_devicon_lookup_with_multiple_files() {
       let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
       cmd
