@@ -101,7 +101,6 @@ lazy_static! {
 		m.insert("tsx", "");
 		m.insert("twig", "");
 		m.insert("vim", "");
-		m.insert("vim", "");
 		m.insert("vue", "﵂");
 		m.insert("xul", "");
 		m.insert("yaml", "");
