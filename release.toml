@@ -1,1 +1,2 @@
 sign-commit = true
+pre-release-commit-message = "Release {{version}} 🎉🎉"
