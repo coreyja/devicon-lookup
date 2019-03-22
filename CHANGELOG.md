@@ -1,5 +1,12 @@
 # Change Log
 
+## [Unreleased] - ReleaseDate
+
+### Fixed
+
+* Went back again to `rust-phf` since that was NOT what made this slow
+* Removed my debugging sleep :facepalm:
+
 ## [0.4.0] - 2019-03-21
 
 ### Improved
