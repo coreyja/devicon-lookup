@@ -1,0 +1,17 @@
+version: 2
+
+jobs:
+	test:
+		docker:
+			- image: circleci/ruby:latest
+				steps:
+					- checkout
+					- run:
+							name: Version information
+							command: rustc --version; cargo --version; rustup --version
+					- run:
+							name: Calculate dependencies
+							command: cargo generate-lockfile
+					- run:
+							name: Run all tests
+							command: cargo test --all
