@@ -1,3 +1,4 @@
-sign-commit = true
-pre-release-commit-message = "Release {{version}} 🎉🎉"
 no-dev-version = true
+pre-release-commit-message = "Release {{version}} 🎉🎉"
+pre-release-replacements = [ {file="CHANGELOG.md", search="Unreleased", replace="{{version}}"}, {file="CHANGELOG.md", search="ReleaseDate", replace="{{date}}"} ]
+sign-commit = true
