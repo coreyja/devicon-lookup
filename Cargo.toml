@@ -8,3 +8,6 @@ license = "MIT"
 
 [dependencies]
 lazy_static = "1.2.0"
+
+[dev-dependencies]
+assert_cmd = "0.6.0"
