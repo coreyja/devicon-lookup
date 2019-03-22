@@ -5,14 +5,9 @@ version = "0.3.0"
 authors = ["Corey Alexander <coreyja@gmail.com>"]
 repository = "https://github.com/coreyja/devicon-lookup"
 license = "MIT"
-edition = "2018"
 
 [dependencies]
-phf = "0.7.24"
-
-[build-dependencies]
-phf_codegen = "0.7.24"
+lazy_static = "1.2.0"
 
 [dev-dependencies]
 assert_cmd = "0.6.0"
-cargo-release = "0.11.2"
