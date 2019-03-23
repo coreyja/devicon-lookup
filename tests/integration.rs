@@ -33,7 +33,7 @@ mod integration {
         .with_stdin()
         .buffer("test.rs".blue().to_string())
         .assert()
-        .stdout(format!(" {}\n", "test.rs".blue().to_string()).as_str());
+        .stdout(format!(" {}\n", "test.rs".blue()).as_str());
     }
 
     #[test]
