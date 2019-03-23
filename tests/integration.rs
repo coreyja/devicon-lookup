@@ -4,6 +4,7 @@ extern crate assert_cmd;
 mod integration {
   use std::process::Command;
   use assert_cmd::prelude::*;
+  use colored::*;
 
     #[test]
     fn calling_devicon_lookup_with_single_file_default_icon() {
@@ -23,6 +24,16 @@ mod integration {
           .buffer("test.rs")
           .assert()
           .stdout(" test.rs\n");
+    }
+
+    #[test]
+    fn calling_devicon_lookup_with_single_colored_filename_unique_icon() {
+      let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
+      cmd
+        .with_stdin()
+        .buffer("test.rs".blue().to_string())
+        .assert()
+        .stdout(format!(" {}\n", "test.rs".blue().to_string()).as_str());
     }
 
     #[test]
