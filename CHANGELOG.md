@@ -7,7 +7,11 @@
 * Went back again to `rust-phf` since that was NOT what made this slow
 * Removed my debugging sleep :facepalm:
 
-## [0.4.0] - 2019-03-21
+## [YANKED :cry:] [0.4.0] - 2019-03-21
+
+### Yanked
+
+* Yanked due to having a 1.0 second delay on startup, because of accidental thread sleep
 
 ### Improved
 
@@ -17,7 +21,11 @@
 
 * `vi` icon was incorrectly marked as `vim`
 
-## [0.3.0] - 2019-31-21
+## [YANKED :cry:] [0.3.0] - 2019-31-21
+
+### Yanked
+
+* Yanked due to having a 1.0 second delay on startup, because of accidental thread sleep
 
 ### Improved
 
