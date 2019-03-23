@@ -2,64 +2,59 @@ extern crate assert_cmd;
 
 #[cfg(test)]
 mod integration {
-  use std::process::Command;
-  use assert_cmd::prelude::*;
-  use colored::*;
+    use assert_cmd::prelude::*;
+    use colored::*;
+    use std::process::Command;
 
     #[test]
     fn calling_devicon_lookup_with_single_file_default_icon() {
-      let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-      cmd
-          .with_stdin()
-          .buffer("test.txt")
-          .assert()
-          .stdout(" test.txt\n");
+        let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
+        cmd.with_stdin()
+            .buffer("test.txt")
+            .assert()
+            .stdout(" test.txt\n");
     }
 
     #[test]
     fn calling_devicon_lookup_with_single_file_unique_icon() {
-      let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-      cmd
-          .with_stdin()
-          .buffer("test.rs")
-          .assert()
-          .stdout(" test.rs\n");
+        let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
+        cmd.with_stdin()
+            .buffer("test.rs")
+            .assert()
+            .stdout(" test.rs\n");
     }
 
     #[test]
     fn calling_devicon_lookup_with_single_colored_filename_unique_icon() {
-      let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-      cmd
-        .with_stdin()
-        .buffer("test.rs".blue().to_string())
-        .assert()
-        .stdout(format!(" {}\n", "test.rs".blue()).as_str());
+        let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
+        cmd.with_stdin()
+            .buffer("test.rs".blue().to_string())
+            .assert()
+            .stdout(format!(" {}\n", "test.rs".blue()).as_str());
     }
 
     #[test]
     fn calling_devicon_lookup_with_single_path_unique_icon() {
-      let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-      cmd
-          .with_stdin()
-          .buffer("/some/cool/directories/here/test.rs")
-          .assert()
-          .stdout(" /some/cool/directories/here/test.rs\n");
+        let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
+        cmd.with_stdin()
+            .buffer("/some/cool/directories/here/test.rs")
+            .assert()
+            .stdout(" /some/cool/directories/here/test.rs\n");
     }
 
     #[test]
     fn calling_devicon_lookup_with_multiple_files() {
-      let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-      cmd
-          .with_stdin()
-          .buffer("test.rs\nrandom.rb\nsome_cool_file.js\nmore_things.py")
-          .assert()
-          .stdout(" test.rs\n random.rb\n some_cool_file.js\n more_things.py\n");
+        let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
+        cmd.with_stdin()
+            .buffer("test.rs\nrandom.rb\nsome_cool_file.js\nmore_things.py")
+            .assert()
+            .stdout(" test.rs\n random.rb\n some_cool_file.js\n more_things.py\n");
     }
 
     #[test]
     fn calling_devicon_lookup_with_large_fixture_file() {
-      let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-      cmd
+        let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
+        cmd
           .with_stdin()
           .path("tests/fixtures/all-types.txt").unwrap()
           .assert()
