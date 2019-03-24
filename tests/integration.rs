@@ -30,7 +30,16 @@ mod integration {
         cmd.with_stdin()
             .buffer("test.rs".blue().to_string())
             .assert()
-            .stdout(format!(" {}\n", "test.rs".blue()).as_str());
+            .stdout(" \x1b[34mtest.rs\x1B[0m\n");
+    }
+
+    #[test]
+    fn calling_devicon_lookup_with_multi_colored_filenames() {
+        let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
+        cmd.with_stdin()
+            .buffer(format!("{}\n{}","test.rs".blue(), "test.rb".red()))
+            .assert()
+            .stdout(" \x1b[34mtest.rs\x1B[0m\n \x1b[31mtest.rb\x1b[0m\n");
     }
 
     #[test]
