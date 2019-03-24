@@ -49,11 +49,11 @@ fn strip_ansi_codes(input: &str) -> String {
 }
 
 fn maybe_strip_color(strip_color: bool, input: &str) -> String {
-  if strip_color {
-    strip_ansi_codes(input)
-  } else {
-    String::from(input)
-  }
+    if strip_color {
+        strip_ansi_codes(input)
+    } else {
+        String::from(input)
+    }
 }
 
 fn process_stdin(strip_color: bool) {
@@ -75,8 +75,8 @@ fn main() {
         .and_then(|d| d.deserialize())
         .unwrap_or_else(|e| e.exit());
     if args.flag_version {
-      println!("Dev Icon Lookup v{}", VERSION);
+        println!("Dev Icon Lookup v{}", VERSION);
     } else {
-      process_stdin(args.flag_strip_color);
+        process_stdin(args.flag_strip_color);
     }
 }
