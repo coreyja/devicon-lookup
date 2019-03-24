@@ -9,6 +9,9 @@ jobs:
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
+      - run:
+          name: Install rust fmt
+          command: rustup component add rustfmt
       - restore_cache:
           keys:
             - v1-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
