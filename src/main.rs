@@ -1,9 +1,7 @@
 #[macro_use]
 extern crate lazy_static;
-extern crate phf;
 #[macro_use]
 extern crate serde_derive;
-extern crate docopt;
 
 use docopt::Docopt;
 use regex::Regex;
