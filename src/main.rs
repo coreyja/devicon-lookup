@@ -1,11 +1,37 @@
 #[macro_use]
 extern crate lazy_static;
 extern crate phf;
+#[macro_use]
+extern crate serde_derive;
+extern crate docopt;
 
+use docopt::Docopt;
 use regex::Regex;
 use std::ffi::OsStr;
 use std::io::{self, BufRead};
 use std::path::Path;
+
+const VERSION: &'static str = env!("CARGO_PKG_VERSION");
+const USAGE: &'static str = "
+Dev Icon Lookup
+
+Usage:
+  devicon-lookup [--strip-color]
+  devicon-lookup (-h | --help)
+  devicon-lookup --version
+
+Options:
+  -h --help          Show this screen.
+  --version          Show version.
+  -c --strip-color   Strip ANSI color codes before
+                     parsing the extension
+";
+
+#[derive(Debug, Deserialize)]
+struct Args {
+    flag_strip_color: bool,
+    flag_version: bool,
+}
 
 include!(concat!(env!("OUT_DIR"), "/codegen.rs"));
 
@@ -22,16 +48,35 @@ fn strip_ansi_codes(input: &str) -> String {
     ANSI_COLOR_REGEX.replace_all(input, "").to_string()
 }
 
-fn main() {
+fn maybe_strip_color(strip_color: bool, input: &str) -> String {
+  if strip_color {
+    strip_ansi_codes(input)
+  } else {
+    String::from(input)
+  }
+}
+
+fn process_stdin(strip_color: bool) {
     let stdin = io::stdin();
     for line in stdin.lock().lines() {
         let filename = line.unwrap();
-        let decolored_filename = strip_ansi_codes(&filename);
-        let extension = get_extension_from_filename(&decolored_filename);
+        let file_name_to_parse = maybe_strip_color(strip_color, &filename);
+        let extension = get_extension_from_filename(&file_name_to_parse);
         let symbol = match extension {
             Some(extension) => SYMBOL_MAP.get(extension).unwrap_or(&DEFAULT_SYMBOL),
             None => DEFAULT_SYMBOL,
         };
         println!("{} {}", symbol, filename);
+    }
+}
+
+fn main() {
+    let args: Args = Docopt::new(USAGE)
+        .and_then(|d| d.deserialize())
+        .unwrap_or_else(|e| e.exit());
+    if args.flag_version {
+      println!("Dev Icon Lookup v{}", VERSION);
+    } else {
+      process_stdin(args.flag_strip_color);
     }
 }
