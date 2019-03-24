@@ -30,7 +30,7 @@ fn strip_ansi_codes(input: &str) -> String {
     lazy_static! {
         static ref ANSI_COLOR_REGEX: Regex = Regex::new(r"\x1b\[[0-9;]*m").unwrap();
     }
-    ANSI_COLOR_REGEX.replace_all(input, "").to_string()
+        ANSI_COLOR_REGEX.replace_all(input, "").to_string()
 }
 
 fn maybe_strip_color(strip_color: bool, input: &str) -> String {
