@@ -18,7 +18,7 @@ mod integration {
     #[test]
     fn calling_devicon_lookup_with_strip_color_single_file() {
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-        cmd.arg("--strip-color");
+        cmd.arg("--color");
         cmd.with_stdin()
             .buffer("test.rs".blue().to_string())
             .assert()

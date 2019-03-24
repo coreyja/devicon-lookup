@@ -16,7 +16,7 @@ const USAGE: &'static str = include_str!("USAGE.txt");
 
 #[derive(Debug, Deserialize)]
 struct Args {
-    flag_strip_color: bool,
+    flag_color: bool,
     flag_version: bool,
 }
 
@@ -64,6 +64,6 @@ fn main() {
     if args.flag_version {
         println!("Dev Icon Lookup v{}", VERSION);
     } else {
-        process_stdin(args.flag_strip_color);
+        process_stdin(args.flag_color);
     }
 }
