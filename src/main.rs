@@ -12,20 +12,7 @@ use std::io::{self, BufRead};
 use std::path::Path;
 
 const VERSION: &'static str = env!("CARGO_PKG_VERSION");
-const USAGE: &'static str = "
-Dev Icon Lookup
-
-Usage:
-  devicon-lookup [--strip-color]
-  devicon-lookup (-h | --help)
-  devicon-lookup --version
-
-Options:
-  -h --help          Show this screen.
-  --version          Show version.
-  -c --strip-color   Strip ANSI color codes before
-                     parsing the extension
-";
+const USAGE: &'static str = include_str!("USAGE.txt");
 
 #[derive(Debug, Deserialize)]
 struct Args {
