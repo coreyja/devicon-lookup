@@ -1,0 +1,12 @@
+ Dev Icon Lookup
+
+ Usage:
+   devicon-lookup [--color]
+   devicon-lookup (-h | --help)
+   devicon-lookup --version
+
+ Options:
+   -h --help    Show this screen.
+   --version    Show version.
+   -c --color   Strip ANSI color codes before
+                parsing the extension

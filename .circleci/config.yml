@@ -9,6 +9,9 @@ jobs:
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
+      - run:
+          name: Install rust fmt
+          command: rustup component add rustfmt
       - restore_cache:
           keys:
             - v1-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
@@ -22,6 +25,9 @@ jobs:
             - target/debug/build
             - target/debug/deps
           key: v1-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
+      - run:
+          name: Check All Code Format
+          command: cargo fmt --all -- --check
       - run:
           name: Run all tests
           command: cargo test --all

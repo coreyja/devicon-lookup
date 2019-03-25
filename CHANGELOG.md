@@ -1,5 +1,12 @@
 # Change Log
 
+## [Unreleased] - ReleaseDate
+
+### Improved
+
+* Added option to strip ansi color codes before parsing extension
+* Added help and version commands
+
 ## [0.5.0] - 2019-03-21
 
 ### Fixed
