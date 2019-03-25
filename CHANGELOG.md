@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased] - ReleaseDate
+## [0.6.0] - 2019-03-24
 
 ### Improved
 
