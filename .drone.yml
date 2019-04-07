@@ -26,6 +26,7 @@ steps:
   - cargo build --all --all-targets
   - cargo fmt --all -- --check
   - cargo test --all
+  - echo $CARGO_HOME
   - ls .cargo_build
   - ls .cargo_build/registry
 - name: rebuild
