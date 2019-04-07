@@ -23,6 +23,7 @@ steps:
   commands:
   - rustc --version; cargo --version; rustup --version
   - rustup component add rustfmt
+  - cargo fmt --all -- --check
   - cargo build --all --all-targets
 - name: rebuild
   image: plugins/s3-cache
@@ -46,5 +47,4 @@ steps:
   environment:
     CARGO_HOME: /drone/src/.cargo_build
   commands:
-  - cargo fmt --all -- --check
   - cargo test --all
