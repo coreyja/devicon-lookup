@@ -1,6 +1,10 @@
 kind: pipeline
 name: default
 
+platform:	
+  os: linux	
+  arch: amd64
+
 steps:
 - name: restore
   image: plugins/s3-cache
