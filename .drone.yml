@@ -18,6 +18,8 @@ steps:
     restore: true
 - name: build-and-test
   image: rust:latest
+  environment:
+    CARGO_HOME: /tmp/cargo
   commands:
   - rustc --version; cargo --version; rustup --version
   - rustup component add rustfmt
@@ -38,5 +40,6 @@ steps:
       - target/debug/.fingerprint
       - target/debug/build
       - target/debug/deps
+      - /tmp/cargo/registry
     when:
       event: push
