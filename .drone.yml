@@ -32,7 +32,9 @@ steps:
       from_secret: aws_secret_access_key
     rebuild: true
     mount:
-      - target
+      - target/debug/.fingerprint
+      - target/debug/build
+      - target/debug/deps
       - .cargo_build/registry
     when:
       event: push
