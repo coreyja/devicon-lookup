@@ -22,8 +22,6 @@ steps:
     CARGO_HOME: /drone/src/.cargo_build
   commands:
   - rustc --version; cargo --version; rustup --version
-  - rustup component add rustfmt
-  - cargo fmt -- --check
   - cargo build --locked --all-targets
 - name: rebuild
   image: plugins/s3-cache
@@ -47,4 +45,6 @@ steps:
   environment:
     CARGO_HOME: /drone/src/.cargo_build
   commands:
+  - rustup component add rustfmt
+  - cargo fmt -- --check
   - cargo test --locked
