@@ -16,7 +16,7 @@ steps:
     secret_key:
       from_secret: aws_secret_access_key
     restore: true
-- name: build-and-test
+- name: build
   image: rust:latest
   environment:
     CARGO_HOME: /drone/src/.cargo_build
@@ -24,11 +24,6 @@ steps:
   - rustc --version; cargo --version; rustup --version
   - rustup component add rustfmt
   - cargo build --all --all-targets
-  - cargo fmt --all -- --check
-  - cargo test --all
-  - echo $CARGO_HOME
-  - ls .cargo_build
-  - ls .cargo_build/registry
 - name: rebuild
   image: plugins/s3-cache
   settings:
@@ -46,3 +41,10 @@ steps:
       - .cargo_build/registry
     when:
       event: push
+- name: test
+  image: rust:latest
+  environment:
+    CARGO_HOME: /drone/src/.cargo_build
+  commands:
+  - cargo fmt --all -- --check
+  - cargo test --all
