@@ -35,7 +35,6 @@ steps:
       from_secret: aws_secret_access_key
     rebuild: true
     mount:
-      - /usr/local/cargo/registry
       - target/debug/.fingerprint
       - target/debug/build
       - target/debug/deps
