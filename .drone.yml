@@ -24,6 +24,8 @@ steps:
   - cargo build --all --all-targets
   - cargo fmt --all -- --check
   - cargo test --all
+  - ls /usr/local/cargo
+  - ls /usr/local/cargo/registry
 - name: rebuild
   image: plugins/s3-cache
   settings:
