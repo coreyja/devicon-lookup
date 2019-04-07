@@ -1,10 +1,6 @@
 kind: pipeline
 name: default
 
-platform:
-  os: linux
-  arch: amd64
-
 steps:
 - name: restore
   image: plugins/s3-cache
@@ -23,8 +19,8 @@ steps:
   commands:
   - rustc --version; cargo --version; rustup --version
   - rustup component add rustfmt
-  - cargo fmt --all -- --check
-  - cargo build --all --all-targets
+  - cargo fmt -- --check
+  - cargo build
 - name: rebuild
   image: plugins/s3-cache
   settings:
@@ -45,4 +41,4 @@ steps:
   environment:
     CARGO_HOME: /drone/src/.cargo_build
   commands:
-  - cargo test --all
+  - cargo test
