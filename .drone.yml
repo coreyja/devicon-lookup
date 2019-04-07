@@ -19,15 +19,15 @@ steps:
 - name: build-and-test
   image: rust:latest
   environment:
-    $CARGO_HOME: .cargo
+    $CARGO_HOME: /drone/src/.cargo_build
   commands:
   - rustc --version; cargo --version; rustup --version
   - rustup component add rustfmt
   - cargo build --all --all-targets
   - cargo fmt --all -- --check
   - cargo test --all
-  - ls .cargo
-  - ls .cargo/registry
+  - ls .cargo_build
+  - ls .cargo_build/registry
 - name: rebuild
   image: plugins/s3-cache
   settings:
@@ -42,6 +42,6 @@ steps:
       - target/debug/.fingerprint
       - target/debug/build
       - target/debug/deps
-      - .cargo/registry
+      - .cargo_build/registry
     when:
       event: push
