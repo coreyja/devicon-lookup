@@ -21,7 +21,9 @@ steps:
   commands:
   - rustc --version; cargo --version; rustup --version
   - rustup component add rustfmt
-  - echo "$CARGO_HOME"
+  - cargo build --all
+  - cargo fmt --all -- --check
+  - cargo test --all
 - name: rebuild
   image: plugins/s3-cache
   settings:
