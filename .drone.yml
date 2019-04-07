@@ -7,7 +7,7 @@ platform:
 
 steps:
 - name: build-and-test
-  image: circleci/rust:latest
+  image: rust:latest
   commands:
   - rustc --version; cargo --version; rustup --version
   - rustup component add rustfmt
