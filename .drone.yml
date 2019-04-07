@@ -38,6 +38,6 @@ steps:
       - target/debug/.fingerprint
       - target/debug/build
       - target/debug/deps
-      - /root/.cargo/registry
+      - /usr/local/cargo/registry
     when:
       event: push
