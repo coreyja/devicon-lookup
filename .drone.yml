@@ -6,6 +6,16 @@ platform:
   arch: amd64
 
 steps:
+- name: restore
+  image: plugins/s3-cache
+  settings:
+    pull: true
+    root: cache.dokku.coreyja
+    access_key:
+      from_secret: aws_access_key_id
+    secret_key:
+      from_secret: aws_secret_access_key
+    restore: true
 - name: build-and-test
   image: rust:latest
   commands:
@@ -14,3 +24,20 @@ steps:
   - cargo build --all --all-targets
   - cargo fmt --all -- --check
   - cargo test --all
+- name: rebuild
+  image: plugins/s3-cache
+  settings:
+    pull: true
+    root: cache.dokku.coreyja
+    access_key:
+      from_secret: aws_access_key_id
+    secret_key:
+      from_secret: aws_secret_access_key
+    rebuild: true
+    mount:
+      - /usr/local/cargo/registry
+      - target/debug/.fingerprint
+      - target/debug/build
+      - target/debug/deps
+    when:
+      event: push
