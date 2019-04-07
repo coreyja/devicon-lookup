@@ -1,0 +1,16 @@
+kind: pipeline
+name: default
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: build-and-test
+  image: circleci/rust:latest
+  commands:
+  - rustc --version; cargo --version; rustup --version
+  - rustup component add rustfmt
+  - cargo build --all --all-targets
+  - cargo fmt --all -- --check
+  - cargo test --all
