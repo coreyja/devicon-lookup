@@ -19,7 +19,7 @@ steps:
 - name: build-and-test
   image: rust:latest
   environment:
-    $CARGO_HOME: /drone/src/.cargo_build
+    CARGO_HOME: /drone/src/.cargo_build
   commands:
   - rustc --version; cargo --version; rustup --version
   - rustup component add rustfmt
