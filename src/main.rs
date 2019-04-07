@@ -7,6 +7,7 @@ use docopt::Docopt;
 use std::io::{self, BufRead};
 
 mod devicon_lookup;
+use devicon_lookup::*;
 
 const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 const USAGE: &'static str = include_str!("USAGE.txt");
@@ -21,20 +22,73 @@ struct Cli {
     args: Args,
 }
 
+trait Symbolable {
+    fn to_parse(&self) -> &str;
+    fn to_print(&self) -> &str;
+
+    fn extension(&self) -> Option<&str> {
+        get_extension_from_filename(self.to_parse())
+    }
+
+    fn symbol(&self) -> &str {
+        match self.extension() {
+            Some(extension) => get_symbol_from_extension(extension),
+            None => get_default_symbol(),
+        }
+    }
+
+    fn print_with_symbol(&self) {
+        println!("{} {}", self.symbol(), self.to_print());
+    }
+}
+
+struct Line {
+    line: String,
+}
+
+impl Symbolable for Line {
+    fn to_parse(&self) -> &str {
+        &self.line
+    }
+    fn to_print(&self) -> &str {
+        &self.line
+    }
+}
+
+struct ColoredLine {
+    line: String,
+    stripped_line: String,
+}
+
+impl ColoredLine {
+    fn new(line: &str) -> ColoredLine {
+        let stripped_line = strip_ansi_codes(&line);
+        ColoredLine {
+            line: String::from(line),
+            stripped_line: stripped_line,
+        }
+    }
+}
+
+impl Symbolable for ColoredLine {
+    fn to_parse(&self) -> &str {
+        &self.stripped_line
+    }
+    fn to_print(&self) -> &str {
+        &self.line
+    }
+}
+
 impl Cli {
     fn process_line(&self, line: &str) {
-        let filename = String::from(line);
-        let file_name_to_parse = if self.args.flag_color {
-            devicon_lookup::strip_ansi_codes(&filename)
+        let filename: Box<Symbolable> = if self.args.flag_color {
+            Box::new(ColoredLine::new(line))
         } else {
-            filename.clone()
+            Box::new(Line {
+                line: String::from(line),
+            })
         };
-        let extension = devicon_lookup::get_extension_from_filename(&file_name_to_parse);
-        let symbol = match extension {
-            Some(extension) => devicon_lookup::get_symbol_from_extension(extension),
-            None => devicon_lookup::get_default_symbol(),
-        };
-        println!("{} {}", symbol, filename);
+        filename.print_with_symbol();
     }
 
     fn process_stdin(&self) {
