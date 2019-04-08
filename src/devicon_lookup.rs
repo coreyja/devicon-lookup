@@ -7,11 +7,6 @@ lazy_static! {
 }
 
 const DEFAULT_SYMBOL: &'static str = "";
-
-pub fn strip_ansi_codes(input: &str) -> String {
-    ANSI_COLOR_REGEX.replace_all(input, "").to_string()
-}
-
 include!(concat!(env!("OUT_DIR"), "/codegen.rs"));
 
 pub trait Symbolable {
@@ -43,8 +38,8 @@ impl Line {
         Line { line }
     }
 
-    pub fn boxed(line: String) -> Box<Line> {
-        Box::new(Line::new(line))
+    pub fn boxed(line: String) -> Box<Self> {
+        Box::new(Self::new(line))
     }
 }
 
@@ -63,16 +58,20 @@ pub struct ColoredLine {
 }
 
 impl ColoredLine {
+    fn strip_ansi_codes(input: &str) -> String {
+        ANSI_COLOR_REGEX.replace_all(input, "").to_string()
+    }
+
     fn new(line: String) -> ColoredLine {
-        let stripped_line = strip_ansi_codes(&line);
+        let stripped_line = Self::strip_ansi_codes(&line);
         ColoredLine {
             line,
             stripped_line: stripped_line,
         }
     }
 
-    pub fn boxed(line: String) -> Box<ColoredLine> {
-        Box::new(ColoredLine::new(line))
+    pub fn boxed(line: String) -> Box<Self> {
+        Box::new(Self::new(line))
     }
 }
 
