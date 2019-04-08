@@ -46,6 +46,16 @@ struct Line {
     line: String,
 }
 
+impl Line {
+    fn new(line: String) -> Line {
+        Line { line }
+    }
+
+    fn boxed(line: String) -> Box<Line> {
+        Box::new(Line::new(line))
+    }
+}
+
 impl Symbolable for Line {
     fn to_parse(&self) -> &str {
         &self.line
@@ -61,12 +71,16 @@ struct ColoredLine {
 }
 
 impl ColoredLine {
-    fn new(line: &str) -> ColoredLine {
+    fn new(line: String) -> ColoredLine {
         let stripped_line = strip_ansi_codes(&line);
         ColoredLine {
-            line: String::from(line),
+            line,
             stripped_line: stripped_line,
         }
+    }
+
+    fn boxed(line: String) -> Box<ColoredLine> {
+        Box::new(ColoredLine::new(line))
     }
 }
 
@@ -80,13 +94,11 @@ impl Symbolable for ColoredLine {
 }
 
 impl Cli {
-    fn process_line(&self, line: &str) {
+    fn process_line(&self, line: String) {
         let filename: Box<Symbolable> = if self.args.flag_color {
-            Box::new(ColoredLine::new(line))
+            ColoredLine::boxed(line)
         } else {
-            Box::new(Line {
-                line: String::from(line),
-            })
+            Line::boxed(line)
         };
         filename.print_with_symbol();
     }
@@ -94,7 +106,7 @@ impl Cli {
     fn process_stdin(&self) {
         let stdin = io::stdin();
         for line in stdin.lock().lines() {
-            self.process_line(&line.unwrap());
+            self.process_line(line.unwrap());
         }
     }
 
