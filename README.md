@@ -1,4 +1,7 @@
 # devicon-lookup
+
+[![Master Build Status](https://drone.dokku.coreyja.com/api/badges/coreyja/devicon-lookup/status.svg)](https://drone.dokku.coreyja.com/coreyja/devicon-lookup)
+
 Prepend the correct devicon to the beginning of each filename
 
 ## VIM Usage
