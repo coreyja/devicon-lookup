@@ -37,6 +37,9 @@ steps:
 #     rebuild: true
 #     mount:
 #       - .cargo_build/registry
+#       - target/debug/.fingerprint
+#       - target/debug/build
+#       - target/debug/deps
 #     when:
 #       event: push
 - name: test
