@@ -1,3 +1,4 @@
+---
 kind: pipeline
 name: default
 
@@ -50,3 +51,8 @@ steps:
   - rustup component add rustfmt
   - cargo fmt -- --check
   - cargo test --locked
+---
+kind: signature
+hmac: ab1aa01dd6761dcf7501de9c5bbc8be0614b3ef06135cdb3788057992894c63d
+
+...
