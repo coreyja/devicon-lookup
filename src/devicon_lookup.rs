@@ -14,7 +14,9 @@ pub trait Symbolable {
     fn to_print(&self) -> &str;
 
     fn extension(&self) -> Option<&str> {
-        Path::new(self.to_parse()).extension().and_then(OsStr::to_str)
+        Path::new(self.to_parse())
+            .extension()
+            .and_then(OsStr::to_str)
     }
 
     fn symbol(&self) -> &str {
