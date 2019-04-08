@@ -1,6 +1,7 @@
 use regex::Regex;
 use std::ffi::OsStr;
 use std::path::Path;
+use std::io::{self, Write};
 
 lazy_static! {
     static ref ANSI_COLOR_REGEX: Regex = Regex::new(r"\x1b\[[0-9;]*m").unwrap();
@@ -27,7 +28,10 @@ pub trait Symbolable {
     }
 
     fn print_with_symbol(&self) {
-        println!("{} {}", self.symbol(), self.to_print());
+        match writeln!(&mut io::stdout(), "{} {}", self.symbol(), self.to_print()) {
+            Ok(_) => (),
+            Err(_) => ::std::process::exit(0),
+        }
     }
 }
 
