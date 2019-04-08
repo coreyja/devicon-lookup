@@ -22,91 +22,21 @@ struct Cli {
     args: Args,
 }
 
-trait Symbolable {
-    fn to_parse(&self) -> &str;
-    fn to_print(&self) -> &str;
-
-    fn extension(&self) -> Option<&str> {
-        get_extension_from_filename(self.to_parse())
-    }
-
-    fn symbol(&self) -> &str {
-        match self.extension() {
-            Some(extension) => get_symbol_from_extension(extension),
-            None => get_default_symbol(),
-        }
-    }
-
-    fn print_with_symbol(&self) {
-        println!("{} {}", self.symbol(), self.to_print());
-    }
-}
-
-struct Line {
-    line: String,
-}
-
-impl Line {
-    fn new(line: String) -> Line {
-        Line { line }
-    }
-
-    fn boxed(line: String) -> Box<Line> {
-        Box::new(Line::new(line))
-    }
-}
-
-impl Symbolable for Line {
-    fn to_parse(&self) -> &str {
-        &self.line
-    }
-    fn to_print(&self) -> &str {
-        &self.line
-    }
-}
-
-struct ColoredLine {
-    line: String,
-    stripped_line: String,
-}
-
-impl ColoredLine {
-    fn new(line: String) -> ColoredLine {
-        let stripped_line = strip_ansi_codes(&line);
-        ColoredLine {
-            line,
-            stripped_line: stripped_line,
-        }
-    }
-
-    fn boxed(line: String) -> Box<ColoredLine> {
-        Box::new(ColoredLine::new(line))
-    }
-}
-
-impl Symbolable for ColoredLine {
-    fn to_parse(&self) -> &str {
-        &self.stripped_line
-    }
-    fn to_print(&self) -> &str {
-        &self.line
-    }
-}
-
 impl Cli {
-    fn process_line(&self, line: String) {
-        let filename: Box<Symbolable> = if self.args.flag_color {
+    fn line_to_symbolable(&self, line: String) -> Box<Symbolable> {
+        if self.args.flag_color {
             ColoredLine::boxed(line)
         } else {
             Line::boxed(line)
-        };
-        filename.print_with_symbol();
+        }
     }
 
     fn process_stdin(&self) {
         let stdin = io::stdin();
-        for line in stdin.lock().lines() {
-            self.process_line(line.unwrap());
+        for line_result in stdin.lock().lines() {
+            let line = line_result.expect("Failed to read line from stdin");
+            let filename = self.line_to_symbolable(line);
+            filename.print_with_symbol();
         }
     }
 
