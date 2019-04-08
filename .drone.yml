@@ -1,0 +1,58 @@
+---
+kind: pipeline
+name: default
+
+platform:	
+  os: linux	
+  arch: amd64
+
+steps:
+# - name: restore
+#   image: plugins/s3-cache
+#   settings:
+#     pull: true
+#     debug: true
+#     root: cache.dokku.coreyja
+#     access_key:
+#       from_secret: aws_access_key_id
+#     secret_key:
+#       from_secret: aws_secret_access_key
+#     restore: true
+- name: build
+  image: rust:latest
+  environment:
+    CARGO_HOME: /drone/src/.cargo_build
+  commands:
+  - rustc --version; cargo --version; rustup --version
+  - cargo build --locked --all-targets
+# - name: rebuild
+#   image: plugins/s3-cache
+#   settings:
+#     pull: true
+#     debug: true
+#     root: cache.dokku.coreyja
+#     access_key:
+#       from_secret: aws_access_key_id
+#     secret_key:
+#       from_secret: aws_secret_access_key
+#     rebuild: true
+#     mount:
+#       - .cargo_build/registry
+#       - target/debug/.fingerprint
+#       - target/debug/build
+#       - target/debug/deps
+#     when:
+#       event: push
+- name: test
+  image: rust:latest
+  environment:
+    CARGO_HOME: /drone/src/.cargo_build
+  commands:
+  - rustup component add rustfmt
+  - cargo fmt -- --check
+  - cargo test --locked
+---
+kind: signature
+hmac: ab1aa01dd6761dcf7501de9c5bbc8be0614b3ef06135cdb3788057992894c63d
+
+...
