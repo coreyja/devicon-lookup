@@ -53,6 +53,6 @@ steps:
   - cargo test --locked
 ---
 kind: signature
-hmac: ab1aa01dd6761dcf7501de9c5bbc8be0614b3ef06135cdb3788057992894c63d
+hmac: bd4a3784991857b53118d48f907fd2be877d72a9209863ad4cf472cba912e6d5
 
 ...
