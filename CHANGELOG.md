@@ -1,5 +1,19 @@
 # Change Log
 
+## [Unreleased] - ReleaseDate
+
+### Fixes
+
+* Fixed issue that caused a panic when it encountered a broken pipe
+  - Fixes Github Issue #9
+
+### Dependencies
+
+* Updated `regex` from `1.1.2` to `1.1.5`
+* [Dev] Updated `assert_cmd` from `0.6.0` to `0.11.1`
+
+Various other dependencies of dependencies were also updated
+
 ## [0.6.0] - 2019-03-24
 
 ### Improved
