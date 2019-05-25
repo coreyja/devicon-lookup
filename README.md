@@ -1,6 +1,8 @@
 # devicon-lookup
 
-[![Master Build Status](https://drone.dokku.coreyja.com/api/badges/coreyja/devicon-lookup/status.svg)](https://drone.dokku.coreyja.com/coreyja/devicon-lookup) [![Join the chat at https://gitter.im/devicon-lookup/community](https://badges.gitter.im/devicon-lookup/community.svg)](https://gitter.im/devicon-lookup/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Master Build Status](https://drone.dokku.coreyja.com/api/badges/coreyja/devicon-lookup/status.svg)](https://drone.dokku.coreyja.com/coreyja/devicon-lookup)
+
+[![Join the chat at https://gitter.im/devicon-lookup/community](https://badges.gitter.im/devicon-lookup/community.svg)](https://gitter.im/devicon-lookup/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Prepend the correct devicon to the beginning of each filename
 
