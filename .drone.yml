@@ -12,9 +12,9 @@ steps:
   image: coreyja/rust-cache:rust
   settings:
     aws_access_key_id:
-      from_secret: CACHE_AWS_ACCESS_KEY_ID
+      from_secret: aws_access_key_id
     aws_secret_access_key:
-      from_secret: CACHE_AWS_SECRET_ACCESS_KEY
+      from_secret: aws_secret_access_key
     cache_bucket: cache.dokku.coreyja
     cache_download: true
 
@@ -33,9 +33,9 @@ steps:
   image: coreyja/rust-cache:rust
   settings:
     aws_access_key_id:
-      from_secret: CACHE_AWS_ACCESS_KEY_ID
+      from_secret: aws_access_key_id
     aws_secret_access_key:
-      from_secret: CACHE_AWS_SECRET_ACCESS_KEY
+      from_secret: aws_secret_access_key
     cache_bucket: cache.dokku.coreyja
 
 - name: test
@@ -47,6 +47,6 @@ steps:
 
 ---
 kind: signature
-hmac: 0983c27ff7921087f2186c0cb0a445bb5dd0dce6afd010bae52a614ed509675a
+hmac: d522bbd57591cab05f4a53165ac83ff931754eb0393bf9a2d7a36dce4d023d22
 
 ...
