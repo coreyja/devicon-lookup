@@ -30,7 +30,7 @@ steps:
 
 - name: cache
   pull: true
-  image: coreyja/rust-cache:yarn
+  image: coreyja/rust-cache:rust
   settings:
     aws_access_key_id:
       from_secret: CACHE_AWS_ACCESS_KEY_ID
@@ -47,6 +47,6 @@ steps:
 
 ---
 kind: signature
-hmac: ca98f9a25ba725768db7138a0c7f065ea3af982f32f6c4174bdaa4394198f83b
+hmac: 0983c27ff7921087f2186c0cb0a445bb5dd0dce6afd010bae52a614ed509675a
 
 ...
