@@ -17,6 +17,8 @@ steps:
       from_secret: aws_secret_access_key
     cache_bucket: cache.dokku.coreyja
     cache_download: true
+  depends_on:
+  - clone
 
 - name: build
   image: rust:latest
@@ -27,6 +29,8 @@ steps:
   - cargo build --locked --all-targets
   environment:
     CARGO_HOME: /drone/src/cargo
+  depends_on:
+  - restore
 
 - name: cache
   pull: true
@@ -37,6 +41,8 @@ steps:
     aws_secret_access_key:
       from_secret: aws_secret_access_key
     cache_bucket: cache.dokku.coreyja
+  depends_on:
+  - build
 
 - name: test
   image: rust:latest
@@ -44,9 +50,11 @@ steps:
   - cargo test --locked
   environment:
     CARGO_HOME: /drone/src/cargo
+  depends_on:
+  - build
 
 ---
 kind: signature
-hmac: 6d1a7388bc22c6fad301aeb6fa60734a56061f3ca3ffe66c50025996c422211a
+hmac: 40431508f8ebda495e8cc163ef9d2ca81cd9135fe08abf83931757fe742b40e7
 
 ...
