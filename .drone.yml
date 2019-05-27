@@ -26,7 +26,7 @@ steps:
   - cargo fmt -- --check
   - cargo build --locked --all-targets
   environment:
-    CARGO_HOME: /drone/src/.cargo_build
+    CARGO_HOME: /drone/src/cargo
 
 - name: cache
   pull: true
@@ -43,10 +43,10 @@ steps:
   commands:
   - cargo test --locked
   environment:
-    CARGO_HOME: /drone/src/.cargo_build
+    CARGO_HOME: /drone/src/cargo
 
 ---
 kind: signature
-hmac: d522bbd57591cab05f4a53165ac83ff931754eb0393bf9a2d7a36dce4d023d22
+hmac: 6d1a7388bc22c6fad301aeb6fa60734a56061f3ca3ffe66c50025996c422211a
 
 ...
