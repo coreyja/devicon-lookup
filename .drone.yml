@@ -7,52 +7,54 @@ platform:
   arch: amd64
 
 steps:
-# - name: restore
-#   image: plugins/s3-cache
-#   settings:
-#     pull: true
-#     debug: true
-#     root: cache.dokku.coreyja
-#     access_key:
-#       from_secret: aws_access_key_id
-#     secret_key:
-#       from_secret: aws_secret_access_key
-#     restore: true
+- name: restore
+  pull: true
+  image: coreyja/rust-cache:rust
+  settings:
+    aws_access_key_id:
+      from_secret: aws_access_key_id
+    aws_secret_access_key:
+      from_secret: aws_secret_access_key
+    cache_bucket: cache.dokku.coreyja
+    cache_download: true
+  depends_on:
+  - clone
+
 - name: build
   image: rust:latest
-  environment:
-    CARGO_HOME: /drone/src/.cargo_build
   commands:
   - rustc --version; cargo --version; rustup --version
   - rustup component add rustfmt
   - cargo fmt -- --check
   - cargo build --locked --all-targets
-# - name: rebuild
-#   image: plugins/s3-cache
-#   settings:
-#     pull: true
-#     debug: true
-#     root: cache.dokku.coreyja
-#     access_key:
-#       from_secret: aws_access_key_id
-#     secret_key:
-#       from_secret: aws_secret_access_key
-#     rebuild: true
-#     mount:
-#       - .cargo_build/registry
-#       - target/debug/.fingerprint
-#       - target/debug/build
-#       - target/debug/deps
-#     when:
-#       event: push
+  environment:
+    CARGO_HOME: /drone/src/cargo
+  depends_on:
+  - restore
+
+- name: cache
+  pull: true
+  image: coreyja/rust-cache:rust
+  settings:
+    aws_access_key_id:
+      from_secret: aws_access_key_id
+    aws_secret_access_key:
+      from_secret: aws_secret_access_key
+    cache_bucket: cache.dokku.coreyja
+  depends_on:
+  - build
+
 - name: test
   image: rust:latest
-  environment:
-    CARGO_HOME: /drone/src/.cargo_build
   commands:
   - cargo test --locked
+  environment:
+    CARGO_HOME: /drone/src/cargo
+  depends_on:
+  - build
+
 ---
 kind: signature
-hmac: bd4a3784991857b53118d48f907fd2be877d72a9209863ad4cf472cba912e6d5
+hmac: 40431508f8ebda495e8cc163ef9d2ca81cd9135fe08abf83931757fe742b40e7
 
 ...
