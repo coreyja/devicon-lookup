@@ -41,6 +41,7 @@ steps:
     aws_secret_access_key:
       from_secret: aws_secret_access_key
     cache_bucket: cache.dokku.coreyja
+  failure: ignore
   depends_on:
   - build
 
@@ -55,6 +56,6 @@ steps:
 
 ---
 kind: signature
-hmac: 40431508f8ebda495e8cc163ef9d2ca81cd9135fe08abf83931757fe742b40e7
+hmac: a3f7e163f6320dccef47d031b5be24b5cf046f10a6448f5d9718b658b3d8918c
 
 ...
