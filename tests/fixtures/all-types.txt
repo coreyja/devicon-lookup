@@ -24,6 +24,9 @@ example.dump
 example.edn
 example.ejs
 example.erl
+example.ex
+example.eex
+example.exs
 example.f#
 example.fish
 example.fs
