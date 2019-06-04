@@ -1,5 +1,19 @@
 # Change Log
 
+## [Unreleased] - ReleaseDate
+
+### Features
+
+* Added Icons for Elixir
+  - Github PR [#99](https://github.com/coreyja/devicon-lookup/pull/99) thanks [@nifox](https://github.com/nifoc)! :tada:
+
+### Dependencies
+
+* Updated `colored` from `1.7.0` to `1.8.0`
+* Updated `regex` from `1.1.5` to `1.1.6`
+
+Various other dependencies of dependencies were also updated
+
 ## [0.6.1] - 2019-04-09
 
 ### Fixes
