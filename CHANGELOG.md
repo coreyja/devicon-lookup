@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased] - ReleaseDate
+## [0.7.0] - 2019-06-03
 
 ### Features
 
