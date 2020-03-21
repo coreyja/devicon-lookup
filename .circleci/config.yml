@@ -1,0 +1,61 @@
+version: 2.1
+jobs:
+  lint-rust:
+    docker:
+      - image: rust:latest
+    resource_class: small
+    steps:
+      - checkout
+
+      - run:
+          name: Print Rust Versions
+          command: rustc --version; cargo --version; rustup --version
+
+      - run:
+          name: Install Rust Format
+          command: rustup component add rustfmt
+
+      - run:
+          name: Test Formatting
+          command: cargo fmt -- --check
+  test-rust:
+    docker:
+      - image: rust:latest
+    resource_class: small
+    steps:
+      - checkout
+
+      - run:
+          name: Print Rust Versions
+          command: rustc --version; cargo --version; rustup --version
+
+      - restore_cache:
+          keys:
+            - v1-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
+
+      - run:
+          name: Install clang (build dependency)
+          command: apt-get update && apt-get install -y clang llvm-dev libclang-dev
+
+      - run:
+          name: Build
+          command: cargo build --locked --all-targets
+
+      - run:
+          name: Run Tests
+          command: cargo test --locked
+
+      - run:
+          name: Autoclean Cargo cache before storing
+          command: cargo-cache || (cargo install cargo-cache --force --git https://github.com/matthiaskrgr/cargo-cache.git --no-default-features --features ci-autoclean && cargo-cache)
+      - save_cache:
+          key: v1-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
+          paths:
+            - /usr/local/cargo
+            - target/debug
+workflows:
+  version: 2
+  ci:
+    jobs:
+      - test-rust
+      - lint-rust
