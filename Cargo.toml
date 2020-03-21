@@ -22,7 +22,7 @@ phf_codegen = "0.7.24"
 assert_cmd = "0.11.1"
 cargo-release = "0.11.2"
 colored = "1.9"
-criterion = "0.2"
+criterion = "0.3"
 
 [[bench]]
 name = "benchmark_cli"
