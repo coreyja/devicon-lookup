@@ -31,11 +31,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
-
-      - run:
-          name: Install clang (build dependency)
-          command: apt-get update && apt-get install -y clang llvm-dev libclang-dev
+            - v2-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
 
       - run:
           name: Build
@@ -49,7 +45,7 @@ jobs:
           name: Autoclean Cargo cache before storing
           command: cargo-cache || (cargo install cargo-cache --force --git https://github.com/matthiaskrgr/cargo-cache.git --no-default-features --features ci-autoclean && cargo-cache)
       - save_cache:
-          key: v1-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
+          key: v2-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
           paths:
             - /usr/local/cargo
             - target/debug
