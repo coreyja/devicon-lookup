@@ -46,4 +46,4 @@ map <C-d> :call Fzf_git_diff_files_with_dev_icons()<CR> " :GFiles?
 map <C-g> :call Fzf_files_with_dev_icons("git ls-files \| uniq")<CR> " :GFiles
 ```
 
-For more details see the accompanying blog post https://coreyja.com/blog/2018/11/17/vim-fzf-with-devicons.html
+For more details see the accompanying blog post https://coreyja.com/vim-fzf-with-devicons/
