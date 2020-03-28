@@ -7,25 +7,19 @@ mod integration {
     #[test]
     fn calling_devicon_lookup_with_single_file_default_icon() {
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-        cmd.write_stdin("test.txt")
-            .assert()
-            .stdout(" test.txt\n");
+        cmd.write_stdin("test.txt").assert().stdout(" test.txt\n");
     }
 
     #[test]
     fn calling_devicon_lookup_with_single_file_unique_icon() {
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-        cmd
-            .write_stdin("test.rs")
-            .assert()
-            .stdout(" test.rs\n");
+        cmd.write_stdin("test.rs").assert().stdout(" test.rs\n");
     }
 
     #[test]
     fn calling_devicon_lookup_with_single_path_unique_icon() {
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-        cmd
-            .write_stdin("/some/cool/directories/here/test.rs")
+        cmd.write_stdin("/some/cool/directories/here/test.rs")
             .assert()
             .stdout(" /some/cool/directories/here/test.rs\n");
     }
@@ -33,8 +27,7 @@ mod integration {
     #[test]
     fn calling_devicon_lookup_with_multiple_files() {
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-        cmd
-            .write_stdin("test.rs\nrandom.rb\nsome_cool_file.js\nmore_things.py")
+        cmd.write_stdin("test.rs\nrandom.rb\nsome_cool_file.js\nmore_things.py")
             .assert()
             .stdout(" test.rs\n random.rb\n some_cool_file.js\n more_things.py\n");
     }
