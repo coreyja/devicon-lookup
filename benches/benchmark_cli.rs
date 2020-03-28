@@ -1,15 +1,12 @@
 #[macro_use]
 extern crate criterion;
 
-use assert_cmd::prelude::*;
 use criterion::Criterion;
-use std::process::Command;
+use assert_cmd::Command;
 
 fn run_cli() {
     let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-    cmd.with_stdin()
-        .path("tests/fixtures/all-types.txt")
-        .unwrap();
+    cmd.pipe_stdin("tests/fixtures/all-types.txt").unwrap();
 }
 
 fn criterion_benchmark(c: &mut Criterion) {
