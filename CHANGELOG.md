@@ -1,5 +1,15 @@
 # Change Log
 
+## [Unreleased] - ReleaseDate
+
+### Dependencies
+
+* Updated `lazy_static` from `1.3.0` to `1.4.0`
+* Updated `phf` from `0.7.24` to `0.8.0`
+* Updated `regex` from `1.16` to `1.3.6`
+
+Various other dependencies of dependencies, and dev dependencies, were also updated
+
 ## [0.7.0] - 2019-06-03
 
 ### Features
