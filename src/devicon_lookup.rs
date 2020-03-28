@@ -9,7 +9,6 @@ lazy_static! {
 }
 
 const DEFAULT_SYMBOL: &'static str = "";
-// include!(concat!(env!("OUT_DIR"), "/codegen.rs"));
 static SYMBOL_MAP: phf::Map<&'static str, &'static str> = phf_map! {
         "ai" => "",
         "awk" => "",
