@@ -1,8 +1,8 @@
+use phf::phf_map;
 use regex::Regex;
 use std::ffi::OsStr;
 use std::io::{self, Write};
 use std::path::Path;
-use phf::phf_map;
 
 lazy_static! {
     static ref ANSI_COLOR_REGEX: Regex = Regex::new(r"\x1b\[[0-9;]*m").unwrap();
