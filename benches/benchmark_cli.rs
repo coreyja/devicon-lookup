@@ -1,8 +1,8 @@
 #[macro_use]
 extern crate criterion;
 
-use criterion::Criterion;
 use assert_cmd::Command;
+use criterion::Criterion;
 
 fn run_cli() {
     let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
