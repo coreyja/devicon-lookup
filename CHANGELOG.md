@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased] - ReleaseDate
+## [0.7.1] - 2020-03-28
 
 ### Dependencies
 

@@ -369,7 +369,7 @@ dependencies = [
 
 [[package]]
 name = "devicon-lookup"
-version = "0.7.0"
+version = "0.7.1"
 dependencies = [
  "assert_cmd 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "cargo-release 0.13.3 (registry+https://github.com/rust-lang/crates.io-index)",
