@@ -31,18 +31,8 @@ impl Cli {
             .args
             .flag_regex
             .clone()
-            .and_then(|string_regex| regex::Regex::new(&string_regex).ok())
-            .and_then(|regex| {
-                Some(move |input: ParserResult| {
-                    Ok(regex
-                        .captures(&input?)
-                        .unwrap()
-                        .get(1)
-                        .unwrap()
-                        .as_str()
-                        .to_string())
-                })
-            });
+            .and_then(|string_regex| Some(regex::Regex::new(&string_regex).unwrap()))
+            .and_then(|regex| Some(devicon_lookup::parsers::regex::parser_from_regex(regex)));
 
         for line_result in stdin.lock().lines() {
             let line: String = line_result.expect("Failed to read line from stdin");
@@ -50,7 +40,7 @@ impl Cli {
                 let mut line_builder = LineBuilder::new(line);
 
                 if self.args.flag_color {
-                    line_builder.with_parser(&strip_color);
+                    line_builder.with_parser(&devicon_lookup::parsers::color::strip_color);
                 }
 
                 if let Some(regex_closure) = &maybe_regex_closure {
