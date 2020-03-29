@@ -27,11 +27,22 @@ impl Cli {
     fn process_stdin(&self) {
         let stdin = io::stdin();
 
-        let maybe_regex = self
+        let maybe_regex_closure = self
             .args
             .flag_regex
             .clone()
-            .and_then(|string_regex| regex::Regex::new(&string_regex).ok());
+            .and_then(|string_regex| regex::Regex::new(&string_regex).ok())
+            .and_then(|regex| {
+                Some(move |input: ParserResult| {
+                    Ok(regex
+                        .captures(&input?)
+                        .unwrap()
+                        .get(1)
+                        .unwrap()
+                        .as_str()
+                        .to_string())
+                })
+            });
 
         for line_result in stdin.lock().lines() {
             let line: String = line_result.expect("Failed to read line from stdin");
@@ -42,9 +53,9 @@ impl Cli {
                     line_builder.with_parser(&strip_color);
                 }
 
-                // if let Some(regex) = maybe_regex {
-                //     line_builder.with_parser(parser_for_regex(&regex))
-                // }
+                if let Some(regex_closure) = &maybe_regex_closure {
+                    line_builder.with_parser(regex_closure);
+                };
 
                 line_builder.build()
             };

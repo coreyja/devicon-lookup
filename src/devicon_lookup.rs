@@ -202,8 +202,8 @@ static SYMBOL_MAP: phf::Map<&'static str, &'static str> = phf_map! {
 // }
 //
 
-type ParserResult = Result<String, &'static str>;
-type Parser = dyn Fn(ParserResult) -> ParserResult;
+pub type ParserResult = Result<String, &'static str>;
+pub type Parser = dyn Fn(ParserResult) -> ParserResult;
 
 pub struct ParsedLine {
     original: String,
@@ -282,7 +282,3 @@ impl ParsedLine {
 pub fn strip_color(input: ParserResult) -> ParserResult {
     Ok(ANSI_COLOR_REGEX.replace_all(&input?, "").to_string())
 }
-
-// fn parser_for_regex(regex: &regex::Regex) -> impl Fn(ParserResult) -> ParserResult {
-//     |input: ParserResult| Ok(regex.find(&input?).unwrap().as_str().to_string())
-// }
