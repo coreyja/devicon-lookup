@@ -104,5 +104,5 @@ static SYMBOL_MAP: phf::Map<&'static str, &'static str> = phf_map! {
 };
 
 pub fn find_symbol(extenstion: &str) -> &str {
-    SYMBOL_MAP.get(extenstion).unwrap_or(&super::DEFAULT_SYMBOL)
+    SYMBOL_MAP.get(extenstion).unwrap_or(&crate::DEFAULT_SYMBOL)
 }

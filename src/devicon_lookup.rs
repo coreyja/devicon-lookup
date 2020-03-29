@@ -7,8 +7,8 @@ use std::path::Path;
 mod map;
 pub mod parsers;
 
-const DEFAULT_SYMBOL: &'static str = "";
-const ERROR_SYMBOL: &'static str = "";
+pub const DEFAULT_SYMBOL: &'static str = "";
+pub const ERROR_SYMBOL: &'static str = "";
 
 pub type ParserResult = Result<String, &'static str>;
 pub type Parser = dyn Fn(ParserResult) -> ParserResult;
