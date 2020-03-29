@@ -1,7 +1,7 @@
  Dev Icon Lookup
 
  Usage:
-   devicon-lookup [--color | --regex=<regex>]
+   devicon-lookup [options]
    devicon-lookup (-h | --help)
    devicon-lookup --version
 
