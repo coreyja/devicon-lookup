@@ -1,12 +1,14 @@
  Dev Icon Lookup
 
  Usage:
-   devicon-lookup [--color]
+   devicon-lookup [--color | --regex=<regex>]
    devicon-lookup (-h | --help)
    devicon-lookup --version
 
  Options:
-   -h --help    Show this screen.
-   --version    Show version.
-   -c --color   Strip ANSI color codes before
-                parsing the extension
+   -h --help            Show this screen.
+   --version            Show version.
+   -c --color           Strip ANSI color codes before
+                        parsing the extension
+   --regex=<regex>      Regex used on each line to find
+                        the filename

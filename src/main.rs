@@ -16,6 +16,7 @@ const USAGE: &'static str = include_str!("USAGE.txt");
 struct Args {
     flag_color: bool,
     flag_version: bool,
+    flag_regex: Option<String>,
 }
 
 struct Cli {
@@ -23,20 +24,33 @@ struct Cli {
 }
 
 impl Cli {
-    fn line_to_symbolable(&self, line: String) -> Box<Symbolable> {
-        if self.args.flag_color {
-            ColoredLine::boxed(line)
-        } else {
-            Line::boxed(line)
-        }
-    }
-
     fn process_stdin(&self) {
         let stdin = io::stdin();
+
+        let maybe_regex = self
+            .args
+            .flag_regex
+            .clone()
+            .and_then(|string_regex| regex::Regex::new(&string_regex).ok());
+
         for line_result in stdin.lock().lines() {
-            let line = line_result.expect("Failed to read line from stdin");
-            let filename = self.line_to_symbolable(line);
-            filename.print_with_symbol();
+            let line: String = line_result.expect("Failed to read line from stdin");
+            let line: Line = {
+                let mut line_builder = LineBuilder::new(line);
+
+                if self.args.flag_color {
+                    line_builder.with_parser(&strip_color);
+                }
+
+                // if let Some(regex) = maybe_regex {
+                //     line_builder.with_parser(parser_for_regex(&regex))
+                // }
+
+                line_builder.build()
+            };
+
+            let parsed = line.parse();
+            parsed.unwrap().print_with_symbol();
         }
     }
 
