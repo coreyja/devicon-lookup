@@ -27,12 +27,16 @@ impl Cli {
     fn process_stdin(&self) {
         let stdin = io::stdin();
 
-        let maybe_regex_closure = self
-            .args
-            .flag_regex
-            .clone()
-            .and_then(|string_regex| Some(regex::Regex::new(&string_regex).unwrap()))
-            .and_then(|regex| Some(devicon_lookup::parsers::regex::parser_from_regex(regex)));
+        let maybe_regex_closure =
+            self.args
+                .flag_regex
+                .clone()
+                .and_then(|string_regex| {
+                    Some(regex::Regex::new(&string_regex).unwrap_or_else(|e| {
+                        panic!("The provided regex could not be parsed: {}", e)
+                    }))
+                })
+                .and_then(|regex| Some(devicon_lookup::parsers::regex::parser_from_regex(regex)));
 
         for line_result in stdin.lock().lines() {
             let line: String = line_result.expect("Failed to read line from stdin");
@@ -50,8 +54,10 @@ impl Cli {
                 line_builder.build()
             };
 
-            let parsed = line.parse();
-            parsed.unwrap().print_with_symbol();
+            match line.parse() {
+                Ok(p) => p.print_with_symbol(),
+                Err(e) => panic!("{}", e),
+            };
         }
     }
 
