@@ -6,9 +6,11 @@
    devicon-lookup --version
 
  Options:
-   -h --help            Show this screen.
-   --version            Show version.
-   -c --color           Strip ANSI color codes before
-                        parsing the extension
-   --regex=<regex>      Regex used on each line to find
-                        the filename
+   -h --help                      Show this screen.
+   --version                      Show version.
+   -c --color                     Strip ANSI color codes before
+                                  parsing the extension
+   --regex=<regex>                Regex used on each line to find
+                                  the filename
+  --prefix=<prefix_delimiter>     Regex used on each line to find
+                                  the filename
