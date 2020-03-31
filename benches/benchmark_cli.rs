@@ -27,6 +27,7 @@ fn run_cli_prefix() {
         .arg("--prefix")
         .arg(":")
         .pipe_stdin("tests/fixtures/all-types-grep-large.txt")
+        .unwrap();
 }
 
 fn run_cli_color() {
