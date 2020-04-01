@@ -29,7 +29,7 @@ mod integration {
     #[test]
     fn calling_devicon_lookup_with_not_found_prefix_defaults_to_full_lines() {
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-        cmd.arg("--prefix")
+        cmd.arg("-p")
             .arg("@")
             .write_stdin("test.rs: someline of the file\ntest.rs".to_string())
             .assert()

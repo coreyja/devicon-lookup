@@ -29,7 +29,7 @@ mod integration {
     #[test]
     fn calling_devicon_lookup_with_malformed_regex_fails() {
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-        cmd.arg("--regex")
+        cmd.arg("-r")
             .arg("^(.")
             .write_stdin("test.rs: someline of the file".to_string())
             .assert()
