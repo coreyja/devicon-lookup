@@ -24,6 +24,15 @@ Uses cases include:
 `rg str --color always | devicon-lookup -c -p : | fzf --ansi`
 ![`rg str -uuu --color always | devicon-lookup -c -p : | fzf --ansi`](/docs/screenshots/grep+fzf.gif?raw=true)
 
+
+## Installation
+
+The recommended way to install is via `cargo` the Rust package manager
+
+```
+cargo install devicon-lookup
+```
+
 ## VIM Usage
 
 The primary real world usage of this tool is within `VIM` and specifically with `fzf`.
