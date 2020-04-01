@@ -19,9 +19,9 @@ ls | devicon-lookup --color
 ### Adding icons to grep results
 
 ```
-grep test | devicon-lookup --prefix :
+rg test | devicon-lookup --prefix :
 ```
-![`grep test | devicon-lookup --prefix :`](/docs/screenshots/grep.png?raw=true)
+![`rg test | devicon-lookup --prefix :`](/docs/screenshots/grep.png?raw=true)
 
 ### Streaming results for large result sets
 
@@ -49,6 +49,7 @@ This repo is a fork of `fzf.vim` that uses this tool to add devicons to the fuzz
 
 ## CLI Usage
 
+```
  Dev Icon Lookup
 
  Usage:
@@ -74,7 +75,7 @@ This repo is a fork of `fzf.vim` that uses this tool to add devicons to the fuzz
    Regex's must be valid based on the Rust `regex` crate
    The regex is expected to have a single capture group,
    which contains the filename. Extra capture groups are ignored
-
+```
 
 ## Further Reading
 
