@@ -11,17 +11,23 @@ Uses cases include:
 
 ### Prepending devicons to the files in your directory
 
-`ls | devicon-lookup --color`
+```
+ls | devicon-lookup --color
+```
 ![`ls | devicon-lookup --color`](/docs/screenshots/ls.png?raw=true)
 
 ### Adding icons to grep results
 
-`grep test | devicon-lookup --prefix :`
+```
+grep test | devicon-lookup --prefix :
+```
 ![`grep test | devicon-lookup --prefix :`](/docs/screenshots/grep.png?raw=true)
 
 ### Streaming results for large result sets
 
-`rg str --color always | devicon-lookup -c -p : | fzf --ansi`
+```
+rg str --color always | devicon-lookup -c -p : | fzf --ansi
+```
 ![`rg str -uuu --color always | devicon-lookup -c -p : | fzf --ansi`](/docs/screenshots/grep+fzf.gif?raw=true)
 
 
