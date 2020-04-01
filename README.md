@@ -47,6 +47,35 @@ This repo is a fork of `fzf.vim` that uses this tool to add devicons to the fuzz
 
 (fzf 💜 devicon ❤️ vim)[coreyja/fzf.devicon.vim]
 
+## CLI Usage
+
+ Dev Icon Lookup
+
+ Usage:
+   devicon-lookup [options]
+   devicon-lookup (-h | --help)
+   devicon-lookup --version
+
+ Options:
+   -h --help                      Show this screen.
+
+   --version                      Show version.
+
+   -c --color
+   Strip ANSI color codes from each line before processing them
+   The original string with ANSI codes preserved is output
+
+   -p --prefix=<delimiter>
+   The filename is considered to be everything up to the given
+   delimineter. The entire line is still output
+
+   -r --regex=<regex>
+   Regex used on each line to find the filename.
+   Regex's must be valid based on the Rust `regex` crate
+   The regex is expected to have a single capture group,
+   which contains the filename. Extra capture groups are ignored
+
+
 ## Further Reading
 
 Blog post about the initial build and inspiration: https://coreyja.com/vim-fzf-with-devicons/
