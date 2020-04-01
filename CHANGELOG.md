@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased] - ReleaseDate
+## [0.8.0] - 2020-04-01
 
 ### Features
 
