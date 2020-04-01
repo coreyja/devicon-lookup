@@ -12,18 +12,17 @@ Uses cases include:
 ### Prepending devicons to the files in your directory
 
 `ls | devicon-lookup --color`
-[[PIC HERE]]
+![`ls | devicon-lookup --color`](/docs/screenshots/ls.png?raw=true)
 
 ### Adding icons to grep results
 
 `grep test | devicon-lookup --prefix :`
-[[PIC HERE]]
+![`grep test | devicon-lookup --prefix :`](/docs/screenshots/grep.png?raw=true)
 
 ### Streaming results for large result sets
 
-`rg test | devicon-lookup --prefix :`
-[[GIF HERE]]
-
+`rg str --color always | devicon-lookup -c -p : | fzf --ansi`
+![`rg str -uuu --color always | devicon-lookup -c -p : | fzf --ansi`](/docs/screenshots/grep+fzf.gif?raw=true)
 
 ## VIM Usage
 
