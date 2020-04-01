@@ -9,6 +9,10 @@
 * Added Ability to prefix deliminator for finding the filename
   - Github PR [#356](https://github.com/coreyja/devicon-lookup/pull/356)
 
+### Dependencies
+
+Various other dependencies of dependencies, and dev dependencies, were updated
+
 ## [0.7.1] - 2020-03-28
 
 ### Dependencies
