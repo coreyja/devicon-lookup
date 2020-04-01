@@ -1,5 +1,14 @@
 # Change Log
 
+## [Unreleased] - ReleaseDate
+
+### Features
+
+* Added Ability to use a regex for finding the filename
+  - Github PR [#356](https://github.com/coreyja/devicon-lookup/pull/356)
+* Added Ability to prefix deliminator for finding the filename
+  - Github PR [#356](https://github.com/coreyja/devicon-lookup/pull/356)
+
 ## [0.7.1] - 2020-03-28
 
 ### Dependencies
