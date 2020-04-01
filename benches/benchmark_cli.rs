@@ -20,12 +20,36 @@ fn run_cli_color() {
         .unwrap();
 }
 
+fn run_cli_regex() {
+    Command::cargo_bin("devicon-lookup")
+        .unwrap()
+        .arg("--regex")
+        .arg("^(.*):")
+        .pipe_stdin("tests/fixtures/all-types-grep-large.txt")
+        .unwrap();
+}
+
+fn run_cli_prefix() {
+    Command::cargo_bin("devicon-lookup")
+        .unwrap()
+        .arg("--prefix")
+        .arg(":")
+        .pipe_stdin("tests/fixtures/all-types-grep-large.txt")
+        .unwrap();
+}
+
 fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("benchmark_each_file_type_plain_cli", |b| {
         b.iter(run_cli_plain)
     });
     c.bench_function("benchmark_each_file_type_color_cli", |b| {
         b.iter(run_cli_color)
+    });
+    c.bench_function("benchmark_each_file_type_regex_cli", |b| {
+        b.iter(|| run_cli_regex())
+    });
+    c.bench_function("benchmark_each_file_type_prefix_cli", |b| {
+        b.iter(|| run_cli_prefix())
     });
 }
 
