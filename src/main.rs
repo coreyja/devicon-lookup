@@ -52,12 +52,12 @@ impl Cli {
                     line_builder.with_parser(&devicon_lookup::parsers::color::strip_color);
                 };
 
-                if let Some(regex_closure) = &maybe_regex_closure {
-                    line_builder.with_parser(regex_closure);
-                };
-
                 if let Some(prefix_closure) = &maybe_prefix_closure {
                     line_builder.with_parser(prefix_closure);
+                };
+
+                if let Some(regex_closure) = &maybe_regex_closure {
+                    line_builder.with_parser(regex_closure);
                 };
 
                 line_builder.build()
