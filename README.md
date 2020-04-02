@@ -14,7 +14,7 @@ Uses cases include:
 ```
 ls | devicon-lookup --color
 ```
-![`ls | devicon-lookup --color`](/  s/screenshots/ls.png?raw=true)
+![`ls | devicon-lookup --color`](/docs/screenshots/ls.png?raw=true)
 
 ### Adding icons to grep results
 
