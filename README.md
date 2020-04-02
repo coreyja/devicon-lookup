@@ -14,7 +14,7 @@ Uses cases include:
 ```
 ls | devicon-lookup --color
 ```
-![`ls | devicon-lookup --color`](/docs/screenshots/ls.png?raw=true)
+![`ls | devicon-lookup --color`](/  s/screenshots/ls.png?raw=true)
 
 ### Adding icons to grep results
 
@@ -37,6 +37,14 @@ The recommended way to install is via `cargo` the Rust package manager
 
 ```
 cargo install devicon-lookup
+```
+
+### Upgrading
+
+Upgrading can also be done via `cargo`. The following command will install the latest available version on devicon-lookup
+
+```
+cargo install devicon-lookup --force
 ```
 
 ## VIM Usage
