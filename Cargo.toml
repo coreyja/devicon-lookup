@@ -20,7 +20,7 @@ assert_cmd = "1.0.1"
 cargo-release = "0.13.5"
 colored = "2.0"
 criterion = "0.3"
-predicates = "1.0.4"
+predicates = "1.0.5"
 
 [[bench]]
 name = "benchmark_cli"
