@@ -771,7 +771,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "phf_macros 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "phf_shared 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "proc-macro-hack 0.5.16 (registry+https://github.com/rust-lang/crates.io-index)",
+ "proc-macro-hack 0.5.18 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -790,7 +790,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "phf_generator 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "phf_shared 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "proc-macro-hack 0.5.16 (registry+https://github.com/rust-lang/crates.io-index)",
+ "proc-macro-hack 0.5.18 (registry+https://github.com/rust-lang/crates.io-index)",
  "proc-macro2 1.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
  "quote 1.0.7 (registry+https://github.com/rust-lang/crates.io-index)",
  "syn 1.0.35 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -877,7 +877,7 @@ dependencies = [
 
 [[package]]
 name = "proc-macro-hack"
-version = "0.5.16"
+version = "0.5.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -1511,7 +1511,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum predicates-tree 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "8e63c4859013b38a76eca2414c64911fba30def9e3202ac461a2d22831220124"
 "checksum proc-macro-error 1.0.3 (registry+https://github.com/rust-lang/crates.io-index)" = "fc175e9777c3116627248584e8f8b3e2987405cabe1c0adf7d1dd28f09dc7880"
 "checksum proc-macro-error-attr 1.0.3 (registry+https://github.com/rust-lang/crates.io-index)" = "3cc9795ca17eb581285ec44936da7fc2335a3f34f2ddd13118b6f4d515435c50"
-"checksum proc-macro-hack 0.5.16 (registry+https://github.com/rust-lang/crates.io-index)" = "7e0456befd48169b9f13ef0f0ad46d492cf9d2dbb918bcf38e01eed4ce3ec5e4"
+"checksum proc-macro-hack 0.5.18 (registry+https://github.com/rust-lang/crates.io-index)" = "99c605b9a0adc77b7211c6b1f722dcb613d68d66859a44f3d485a6da332b0598"
 "checksum proc-macro2 1.0.19 (registry+https://github.com/rust-lang/crates.io-index)" = "04f5f085b5d71e2188cb8271e5da0161ad52c3f227a661a3c135fdf28e258b12"
 "checksum quick-error 1.2.3 (registry+https://github.com/rust-lang/crates.io-index)" = "a1d01941d82fa2ab50be1e79e6714289dd7cde78eba4c074bc5a4374f650dfe0"
 "checksum quote 1.0.7 (registry+https://github.com/rust-lang/crates.io-index)" = "aa563d17ecb180e500da1cfd2b028310ac758de548efdd203e18f283af693f37"
