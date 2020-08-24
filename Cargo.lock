@@ -817,7 +817,7 @@ dependencies = [
  "js-sys 0.3.44 (registry+https://github.com/rust-lang/crates.io-index)",
  "num-traits 0.2.12 (registry+https://github.com/rust-lang/crates.io-index)",
  "wasm-bindgen 0.2.67 (registry+https://github.com/rust-lang/crates.io-index)",
- "web-sys 0.3.42 (registry+https://github.com/rust-lang/crates.io-index)",
+ "web-sys 0.3.44 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -1365,7 +1365,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "web-sys"
-version = "0.3.42"
+version = "0.3.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "js-sys 0.3.44 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1562,7 +1562,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum wasm-bindgen-macro 0.2.67 (registry+https://github.com/rust-lang/crates.io-index)" = "97c57cefa5fa80e2ba15641578b44d36e7a64279bc5ed43c6dbaf329457a2ed2"
 "checksum wasm-bindgen-macro-support 0.2.67 (registry+https://github.com/rust-lang/crates.io-index)" = "841a6d1c35c6f596ccea1f82504a192a60378f64b3bb0261904ad8f2f5657556"
 "checksum wasm-bindgen-shared 0.2.67 (registry+https://github.com/rust-lang/crates.io-index)" = "93b162580e34310e5931c4b792560108b10fd14d64915d7fff8ff00180e70092"
-"checksum web-sys 0.3.42 (registry+https://github.com/rust-lang/crates.io-index)" = "8be2398f326b7ba09815d0b403095f34dd708579220d099caae89be0b32137b2"
+"checksum web-sys 0.3.44 (registry+https://github.com/rust-lang/crates.io-index)" = "dda38f4e5ca63eda02c059d243aa25b5f35ab98451e518c51612cd0f1bd19a47"
 "checksum winapi 0.3.9 (registry+https://github.com/rust-lang/crates.io-index)" = "5c839a674fcd7a98952e593242ea400abe93992746761e38641405d28b00f419"
 "checksum winapi-i686-pc-windows-gnu 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "ac3b87c63620426dd9b991e5ce0329eff545bccbbb34f3be09ff6fb6ab51b7b6"
 "checksum winapi-util 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)" = "70ec6ce85bb158151cae5e5c87f95a8e97d2c0c4b001223f33a334e3ce5de178"
