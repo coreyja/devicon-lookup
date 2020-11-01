@@ -11,7 +11,7 @@ edition = "2018"
 docopt = "1"
 lazy_static = "1.4.0"
 phf = { version = "0.8.0", features = ["macros"] }
-regex = "1.4.1"
+regex = "1.4.2"
 serde = "1.0"
 serde_derive = "1.0"
 
