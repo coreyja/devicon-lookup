@@ -16,7 +16,7 @@ serde = "1.0"
 serde_derive = "1.0"
 
 [dev-dependencies]
-assert_cmd = "1.0.1"
+assert_cmd = "1.0.2"
 cargo-release = "0.13.5"
 colored = "2.0"
 criterion = "0.3"
