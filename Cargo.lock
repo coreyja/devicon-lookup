@@ -594,9 +594,9 @@ dependencies = [
 
 [[package]]
 name = "half"
-version = "1.7.0"
+version = "1.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "600d51af0b301d713cdcc935194a9a2795b49e2595de00d8fe3daec5535d0f90"
+checksum = "62aca2aba2d62b4a7f5b33f3712cb1b0692779a56fb510499d5c0aa594daeaf3"
 
 [[package]]
 name = "heck"
