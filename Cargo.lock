@@ -1260,9 +1260,9 @@ dependencies = [
 
 [[package]]
 name = "siphasher"
-version = "0.3.3"
+version = "0.3.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fa8f3741c7372e75519bd9346068370c9cdaabcc1f9599cbcf2a2719352286b7"
+checksum = "4a5eb1d952355693ec357de97f0f8b77f76ea8ea8bcaf659b3158bb1dbae74c1"
 
 [[package]]
 name = "strsim"
