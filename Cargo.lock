@@ -283,12 +283,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "const_fn"
-version = "0.4.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ce90df4c658c62f12d78f7508cf92f9173e5184a539c10bfe54a3107b3ffd0f2"
-
-[[package]]
 name = "constant_time_eq"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -352,7 +346,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dca26ee1f8d361640700bde38b2c37d8c22b3ce2d360e1fc1c74ea4b0aa7d775"
 dependencies = [
  "cfg-if 1.0.0",
- "crossbeam-utils 0.8.0",
+ "crossbeam-utils 0.8.4",
 ]
 
 [[package]]
@@ -363,18 +357,17 @@ checksum = "94af6efb46fef72616855b036a624cf27ba656ffc9be1b9a3c931cfc7749a9a9"
 dependencies = [
  "cfg-if 1.0.0",
  "crossbeam-epoch",
- "crossbeam-utils 0.8.0",
+ "crossbeam-utils 0.8.4",
 ]
 
 [[package]]
 name = "crossbeam-epoch"
-version = "0.9.0"
+version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec0f606a85340376eef0d6d8fec399e6d4a544d648386c6645eb6d0653b27d9f"
+checksum = "52fb27eab85b17fbb9f6fd667089e07d6a2eb8743d02639ee7f6a7a7729c9c94"
 dependencies = [
  "cfg-if 1.0.0",
- "const_fn",
- "crossbeam-utils 0.8.0",
+ "crossbeam-utils 0.8.4",
  "lazy_static",
  "memoffset",
  "scopeguard",
@@ -393,13 +386,12 @@ dependencies = [
 
 [[package]]
 name = "crossbeam-utils"
-version = "0.8.0"
+version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec91540d98355f690a86367e566ecad2e9e579f230230eb7c21398372be73ea5"
+checksum = "4feb231f0d4d6af81aed15928e58ecf5816aa62a2393e2c82f46973e92a9a278"
 dependencies = [
  "autocfg",
  "cfg-if 1.0.0",
- "const_fn",
  "lazy_static",
 ]
 
@@ -783,9 +775,9 @@ checksum = "b16bd47d9e329435e309c58469fe0791c2d0d1ba96ec0954152a5ae2b04387dc"
 
 [[package]]
 name = "memoffset"
-version = "0.5.5"
+version = "0.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c198b026e1bbf08a937e94c6c60f9ec4a2267f5b0d2eec9c1b21b061ce2be55f"
+checksum = "f83fb6581e8ed1f85fd45c116db8405483899489e38406156c25eb743554361d"
 dependencies = [
  "autocfg",
 ]
@@ -1099,7 +1091,7 @@ checksum = "d78120e2c850279833f1dd3582f730c4ab53ed95aeaaaa862a2a5c71b1656d8e"
 dependencies = [
  "crossbeam-channel",
  "crossbeam-deque",
- "crossbeam-utils 0.8.0",
+ "crossbeam-utils 0.8.4",
  "lazy_static",
  "num_cpus",
 ]
