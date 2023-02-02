@@ -1,6 +1,6 @@
 # devicon-lookup
 
-[![CircleCI](https://circleci.com/gh/coreyja/devicon-lookup.svg?style=svg)](https://circleci.com/gh/coreyja/devicon-lookup) [![Join the chat at https://gitter.im/devicon-lookup/community](https://badges.gitter.im/devicon-lookup/community.svg)](https://gitter.im/devicon-lookup/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![CircleCI](https://circleci.com/gh/coreyja/devicon-lookup.svg?style=svg)](https://circleci.com/gh/coreyja/devicon-lookup)
 
 `devicon-lookup` is a simple standalone CLI tool.
 It accepts text over stdin, and returns it stdout with a devicon prepended.
