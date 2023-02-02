@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased] - ReleaseDate
+## [0.8.1] - 2023-02-02
 
 ### Dependencies
 
