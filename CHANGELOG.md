@@ -11,7 +11,7 @@
 
 - Various Dependencies Updates
 - Clippy and rustfmt changes
-  - Github PR []()
+  - Github PR [#900](https://github.com/coreyja/devicon-lookup/pull/900)
 
 ## [0.8.1] - 2023-02-02
 
