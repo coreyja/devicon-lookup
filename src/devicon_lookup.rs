@@ -1,5 +1,3 @@
-use phf::phf_map;
-use regex::Regex;
 use std::ffi::OsStr;
 use std::io::{self, Write};
 use std::path::Path;
@@ -7,7 +5,7 @@ use std::path::Path;
 mod map;
 pub mod parsers;
 
-pub const DEFAULT_SYMBOL: &'static str = "";
+pub const DEFAULT_SYMBOL: &str = "";
 
 pub type ParserResult = Result<String, &'static str>;
 pub type Parser = dyn Fn(ParserResult) -> ParserResult;
@@ -30,7 +28,7 @@ pub struct LineBuilder<'a> {
 impl<'a> LineBuilder<'a> {
     pub fn new(original: String) -> Self {
         Self {
-            original: original,
+            original,
             filename_parsers: vec![],
         }
     }
@@ -55,11 +53,9 @@ impl<'a> Line<'a> {
             curr = parser(curr)
         }
 
-        curr.and_then(|x| {
-            Ok(ParsedLine {
-                original: self.original,
-                filename: x,
-            })
+        curr.map(|x| ParsedLine {
+            original: self.original,
+            filename: x,
         })
     }
 }
@@ -74,7 +70,7 @@ impl ParsedLine {
     fn symbol(&self) -> &str {
         match self.extension() {
             Some(extension) => map::find_symbol(extension),
-            None => &DEFAULT_SYMBOL,
+            None => DEFAULT_SYMBOL,
         }
     }
 
