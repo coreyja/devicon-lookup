@@ -9,8 +9,8 @@ use std::io::{self, BufRead};
 mod devicon_lookup;
 use devicon_lookup::*;
 
-const VERSION: &'static str = env!("CARGO_PKG_VERSION");
-const USAGE: &'static str = include_str!("USAGE.txt");
+const VERSION: &str = env!("CARGO_PKG_VERSION");
+const USAGE: &str = include_str!("USAGE.txt");
 
 #[derive(Debug, Deserialize)]
 struct Args {
@@ -28,20 +28,20 @@ impl Cli {
     fn process_stdin(&self) {
         let stdin = io::stdin();
 
-        let maybe_regex_closure =
-            self.args
-                .flag_regex
-                .clone()
-                .and_then(|string_regex| {
-                    Some(regex::Regex::new(&string_regex).unwrap_or_else(|e| {
-                        panic!("The provided regex could not be parsed: {}", e)
-                    }))
-                })
-                .and_then(|regex| Some(devicon_lookup::parsers::regex::parser_from_regex(regex)));
+        let maybe_regex_closure = self
+            .args
+            .flag_regex
+            .clone()
+            .map(|string_regex| {
+                regex::Regex::new(&string_regex)
+                    .unwrap_or_else(|e| panic!("The provided regex could not be parsed: {}", e))
+            })
+            .map(devicon_lookup::parsers::regex::parser_from_regex);
 
-        let maybe_prefix_closure = self.args.flag_prefix.clone().and_then(|prefix| {
-            Some(devicon_lookup::parsers::prefix::parser_from_prefix_delimiter(prefix))
-        });
+        let maybe_prefix_closure =
+            self.args.flag_prefix.clone().map(|prefix| {
+                devicon_lookup::parsers::prefix::parser_from_prefix_delimiter(prefix)
+            });
 
         for line_result in stdin.lock().lines() {
             let line: String = line_result.expect("Failed to read line from stdin");
