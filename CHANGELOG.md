@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased] - ReleaseDate
+## [0.9.0] - 2023-07-22
 
 ### Icon Updates
 
