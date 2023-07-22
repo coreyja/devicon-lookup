@@ -53,7 +53,7 @@ The primary real world usage of this tool is within `VIM` and specifically with 
 For more information about one possible solution to integrating these see the `fzf.devicon.vim` repo.
 This repo is a fork of `fzf.vim` that uses this tool to add devicons to the fuzzy search results
 
-(fzf 💜 devicon ❤️ vim)[coreyja/fzf.devicon.vim]
+[fzf 💜 devicon ❤️ vim])(https://github.com/coreyja/fzf.devicon.vim)
 
 ## CLI Usage
 
