@@ -1,7 +1,7 @@
 [package]
 name = "devicon-lookup"
 description = "Prepend the correct devicon to the beginning of each filename"
-version = "0.9.0"
+version = "0.9.1"
 authors = ["Corey Alexander <coreyja@gmail.com>"]
 repository = "https://github.com/coreyja/devicon-lookup"
 license = "MIT"
