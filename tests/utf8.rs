@@ -5,7 +5,7 @@ mod integration {
     use assert_cmd::Command;
 
     #[test]
-    fn calling_devicon_lookup_with_single_file_default_icon() {
+    fn calling_devicon_with_non_ut8_forwards_bytes() {
         let input_non_utf8 = vec![
             0xC0, 0xC1, 0xF5, 0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF,
         ];

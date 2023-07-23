@@ -12,6 +12,8 @@ use devicon_lookup::*;
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 const USAGE: &str = include_str!("USAGE.txt");
 
+mod lines;
+
 #[derive(Debug, Deserialize)]
 struct Args {
     flag_color: bool,
@@ -43,30 +45,38 @@ impl Cli {
                 devicon_lookup::parsers::prefix::parser_from_prefix_delimiter(prefix)
             });
 
-        for line_result in stdin.lock().lines() {
-            let line: String = line_result.expect("Failed to read line from stdin");
-            let line: Line = {
-                let mut line_builder = LineBuilder::new(line);
+        let lines_iter = lines::Lines::new(stdin.lock());
 
-                if self.args.flag_color {
-                    line_builder.with_parser(&devicon_lookup::parsers::color::strip_color);
-                };
+        for line_result in lines_iter {
+            match line_result {
+                Ok(line) => {
+                    let line: Line = {
+                        let mut line_builder = LineBuilder::new(line);
 
-                if let Some(prefix_closure) = &maybe_prefix_closure {
-                    line_builder.with_parser(prefix_closure);
-                };
+                        if self.args.flag_color {
+                            line_builder.with_parser(&devicon_lookup::parsers::color::strip_color);
+                        };
 
-                if let Some(regex_closure) = &maybe_regex_closure {
-                    line_builder.with_parser(regex_closure);
-                };
+                        if let Some(prefix_closure) = &maybe_prefix_closure {
+                            line_builder.with_parser(prefix_closure);
+                        };
 
-                line_builder.build()
-            };
+                        if let Some(regex_closure) = &maybe_regex_closure {
+                            line_builder.with_parser(regex_closure);
+                        };
 
-            match line.parse() {
-                Ok(p) => p.print_with_symbol(),
-                Err(e) => panic!("{}", e),
-            };
+                        line_builder.build()
+                    };
+
+                    match line.parse() {
+                        Ok(p) => p.print_with_symbol(),
+                        Err(e) => panic!("{}", e),
+                    };
+                }
+                Err(e) => {
+                    // dbg!(e);
+                }
+            }
         }
     }
 
