@@ -2,7 +2,6 @@ extern crate assert_cmd;
 
 #[cfg(test)]
 mod integration {
-    use assert_cmd::prelude::*;
     use assert_cmd::Command;
     use predicates::prelude::*;
 

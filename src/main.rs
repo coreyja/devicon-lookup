@@ -4,13 +4,17 @@ extern crate lazy_static;
 extern crate serde_derive;
 
 use docopt::Docopt;
-use std::io::{self, BufRead};
+use lines::{IntoMaybeUt8Lines, MaybeUtf8LinesError};
+use miette::IntoDiagnostic;
+use std::io::{self};
 
 mod devicon_lookup;
 use devicon_lookup::*;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 const USAGE: &str = include_str!("USAGE.txt");
+
+mod lines;
 
 #[derive(Debug, Deserialize)]
 struct Args {
@@ -43,30 +47,36 @@ impl Cli {
                 devicon_lookup::parsers::prefix::parser_from_prefix_delimiter(prefix)
             });
 
-        for line_result in stdin.lock().lines() {
-            let line: String = line_result.expect("Failed to read line from stdin");
-            let line: Line = {
-                let mut line_builder = LineBuilder::new(line);
+        for line_result in stdin.lock().into_maybe_utf8_lines() {
+            match line_result {
+                // IO Succeeded AND UTF8 Decoded
+                Ok(line) => {
+                    let line: Line = {
+                        let mut line_builder = LineBuilder::new(line);
 
-                if self.args.flag_color {
-                    line_builder.with_parser(&devicon_lookup::parsers::color::strip_color);
-                };
+                        if self.args.flag_color {
+                            line_builder.with_parser(&devicon_lookup::parsers::color::strip_color);
+                        };
 
-                if let Some(prefix_closure) = &maybe_prefix_closure {
-                    line_builder.with_parser(prefix_closure);
-                };
+                        if let Some(prefix_closure) = &maybe_prefix_closure {
+                            line_builder.with_parser(prefix_closure);
+                        };
 
-                if let Some(regex_closure) = &maybe_regex_closure {
-                    line_builder.with_parser(regex_closure);
-                };
+                        if let Some(regex_closure) = &maybe_regex_closure {
+                            line_builder.with_parser(regex_closure);
+                        };
 
-                line_builder.build()
-            };
+                        line_builder.build()
+                    };
 
-            match line.parse() {
-                Ok(p) => p.print_with_symbol(),
+                    match line.parse() {
+                        Ok(p) => p.print_with_symbol(),
+                        Err(e) => panic!("{}", e),
+                    };
+                }
+                Err(MaybeUtf8LinesError::Utf8Error(e)) => write_to_stdout(e.as_bytes()),
                 Err(e) => panic!("{}", e),
-            };
+            }
         }
     }
 
@@ -79,10 +89,16 @@ impl Cli {
     }
 }
 
-fn main() {
-    let args: Args = Docopt::new(USAGE)
-        .and_then(|d| d.deserialize())
-        .unwrap_or_else(|e| e.exit());
-    let cli: Cli = Cli { args };
-    cli.run();
+fn main() -> miette::Result<()> {
+    let args = Docopt::new(USAGE).into_diagnostic()?.deserialize();
+
+    match args {
+        Ok(args) => {
+            let cli: Cli = Cli { args };
+            cli.run();
+
+            Ok(())
+        }
+        Err(e) => e.exit(),
+    }
 }

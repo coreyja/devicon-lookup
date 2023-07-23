@@ -1,4 +1,3 @@
-use std::ffi::OsStr;
 use std::io::{self, Write};
 use std::path::Path;
 
@@ -7,8 +6,12 @@ pub mod parsers;
 
 pub const DEFAULT_SYMBOL: &str = "";
 
+pub trait ParserFn: Fn(String) -> ParserResult {}
+
+impl<T: Fn(String) -> ParserResult> ParserFn for T {}
+
 pub type ParserResult = Result<String, &'static str>;
-pub type Parser = dyn Fn(ParserResult) -> ParserResult;
+pub type Parser = dyn ParserFn;
 
 pub struct ParsedLine {
     original: String,
@@ -50,21 +53,21 @@ impl<'a> Line<'a> {
         let mut curr: ParserResult = Ok(self.original.clone());
 
         for parser in self.filename_parsers.iter() {
-            curr = parser(curr)
+            curr = parser(curr?)
         }
 
-        curr.map(|x| ParsedLine {
+        let filename = curr?;
+
+        Ok(ParsedLine {
             original: self.original,
-            filename: x,
+            filename,
         })
     }
 }
 
 impl ParsedLine {
     fn extension(&self) -> Option<&str> {
-        Path::new(&self.filename)
-            .extension()
-            .and_then(OsStr::to_str)
+        Path::new(&self.filename).extension()?.to_str()
     }
 
     fn symbol(&self) -> &str {
@@ -75,9 +78,15 @@ impl ParsedLine {
     }
 
     pub fn print_with_symbol(&self) {
-        match writeln!(&mut io::stdout(), "{} {}", self.symbol(), self.original) {
-            Ok(_) => (),
-            Err(_) => ::std::process::exit(0),
-        }
+        let s = format!("{} {}\n", self.symbol(), self.original);
+        write_to_stdout(s.as_bytes())
+    }
+}
+
+pub fn write_to_stdout(item: &[u8]) {
+    let write_result = io::stdout().write_all(item);
+
+    if write_result.is_err() {
+        ::std::process::exit(0)
     }
 }

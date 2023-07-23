@@ -1,9 +1,8 @@
-use crate::ParserResult;
+use crate::{devicon_lookup::ParserFn, ParserResult};
 use regex::Regex;
 
-pub fn parser_from_regex(regex: Regex) -> impl Fn(ParserResult) -> ParserResult {
-    move |input: ParserResult| -> ParserResult {
-        let input = input?;
+pub fn parser_from_regex(regex: Regex) -> impl ParserFn {
+    move |input: String| -> ParserResult {
         let captures = regex
             .captures(&input)
             .ok_or("Couldn't get captures from input")?;

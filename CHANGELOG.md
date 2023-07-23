@@ -1,5 +1,17 @@
 # Change Log
 
+## [Unreleased] - Release Date
+
+### Bugfix
+
+- Pass through non-UTF8 encoded input without modification
+  - Github PR[#901](https://github.com/coreyja/devicon-lookup/pull/901)
+
+## Refactors
+
+- Refactor the Errors and Types a bit. Add `thiserror` and `miette`
+  - Github PR[#901](https://github.com/coreyja/devicon-lookup/pull/901)
+
 ## [0.9.0] - 2023-07-22
 
 ### Icon Updates

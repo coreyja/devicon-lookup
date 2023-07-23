@@ -1,7 +1,6 @@
 #[macro_use]
 extern crate criterion;
 
-use assert_cmd::prelude::*;
 use assert_cmd::Command;
 use criterion::Criterion;
 
@@ -46,10 +45,10 @@ fn criterion_benchmark(c: &mut Criterion) {
         b.iter(run_cli_color)
     });
     c.bench_function("benchmark_each_file_type_regex_cli", |b| {
-        b.iter(|| run_cli_regex())
+        b.iter(run_cli_regex)
     });
     c.bench_function("benchmark_each_file_type_prefix_cli", |b| {
-        b.iter(|| run_cli_prefix())
+        b.iter(run_cli_prefix)
     });
 }
 
