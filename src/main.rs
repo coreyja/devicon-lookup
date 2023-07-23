@@ -4,7 +4,8 @@ extern crate lazy_static;
 extern crate serde_derive;
 
 use docopt::Docopt;
-use std::io::{self, stdout, BufRead, Write};
+use lines::{IntoMaybeUt8Lines, MaybeUtf8LinesError};
+use std::io::{self, Write};
 
 mod devicon_lookup;
 use devicon_lookup::*;
@@ -45,12 +46,10 @@ impl Cli {
                 devicon_lookup::parsers::prefix::parser_from_prefix_delimiter(prefix)
             });
 
-        let lines_iter = lines::Lines::new(stdin.lock());
-
-        for line_result in lines_iter {
+        for line_result in stdin.lock().into_maybe_utf8_lines() {
             match line_result {
                 // IO Succeeded AND UTF8 Decoded
-                Ok(Ok(line)) => {
+                Ok(line) => {
                     let line: Line = {
                         let mut line_builder = LineBuilder::new(line);
 
@@ -74,9 +73,7 @@ impl Cli {
                         Err(e) => panic!("{}", e),
                     };
                 }
-                // IO Succeeded BUT NOT UTF8 Encoded
-                Ok(Err(e)) => {
-                    // Write the raw bytes back to stdout
+                Err(MaybeUtf8LinesError::Utf8Error(e)) => {
                     io::stdout().lock().write_all(e.as_bytes()).unwrap();
                 }
                 Err(e) => panic!("{}", e),

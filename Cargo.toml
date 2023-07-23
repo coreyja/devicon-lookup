@@ -14,6 +14,7 @@ phf = { version = "0.8.0", features = ["macros"] }
 regex = "1.7.1"
 serde = "1.0"
 serde_derive = "1.0"
+thiserror = "1.0.44"
 
 [dev-dependencies]
 assert_cmd = "1.0.2"
