@@ -1,4 +1,3 @@
-use std::ffi::OsStr;
 use std::io::{self, Write};
 use std::path::Path;
 
@@ -53,18 +52,18 @@ impl<'a> Line<'a> {
             curr = parser(curr)
         }
 
-        curr.map(|x| ParsedLine {
+        let filename = curr?;
+
+        Ok(ParsedLine {
             original: self.original,
-            filename: x,
+            filename,
         })
     }
 }
 
 impl ParsedLine {
     fn extension(&self) -> Option<&str> {
-        Path::new(&self.filename)
-            .extension()
-            .and_then(OsStr::to_str)
+        Path::new(&self.filename).extension()?.to_str()
     }
 
     fn symbol(&self) -> &str {
@@ -75,9 +74,10 @@ impl ParsedLine {
     }
 
     pub fn print_with_symbol(&self) {
-        match writeln!(&mut io::stdout(), "{} {}", self.symbol(), self.original) {
-            Ok(_) => (),
-            Err(_) => ::std::process::exit(0),
+        let write_result = &writeln!(&mut io::stdout(), "{} {}", self.symbol(), self.original);
+
+        if write_result.is_err() {
+            ::std::process::exit(0)
         }
     }
 }

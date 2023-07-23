@@ -5,6 +5,7 @@ extern crate serde_derive;
 
 use docopt::Docopt;
 use lines::{IntoMaybeUt8Lines, MaybeUtf8LinesError};
+use miette::IntoDiagnostic;
 use std::io::{self, Write};
 
 mod devicon_lookup;
@@ -90,10 +91,16 @@ impl Cli {
     }
 }
 
-fn main() {
-    let args: Args = Docopt::new(USAGE)
-        .and_then(|d| d.deserialize())
-        .unwrap_or_else(|e| e.exit());
-    let cli: Cli = Cli { args };
-    cli.run();
+fn main() -> miette::Result<()> {
+    let args = Docopt::new(USAGE).into_diagnostic()?.deserialize();
+
+    match args {
+        Ok(args) => {
+            let cli: Cli = Cli { args };
+            cli.run();
+
+            Ok(())
+        }
+        Err(e) => e.exit(),
+    }
 }
