@@ -84,7 +84,7 @@ impl ParsedLine {
 }
 
 pub fn write_to_stdout(item: &[u8]) {
-    let write_result = io::stdout().write_all(&item);
+    let write_result = io::stdout().write_all(item);
 
     if write_result.is_err() {
         ::std::process::exit(0)

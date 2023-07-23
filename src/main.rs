@@ -6,7 +6,7 @@ extern crate serde_derive;
 use docopt::Docopt;
 use lines::{IntoMaybeUt8Lines, MaybeUtf8LinesError};
 use miette::IntoDiagnostic;
-use std::io::{self, Write};
+use std::io::{self};
 
 mod devicon_lookup;
 use devicon_lookup::*;
