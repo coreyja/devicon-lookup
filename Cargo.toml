@@ -11,7 +11,7 @@ edition = "2018"
 docopt = "1"
 lazy_static = "1.4.0"
 miette = { version = "5.10.0", features = ["fancy"] }
-phf = { version = "0.8.0", features = ["macros"] }
+phf = { version = "0.11", features = ["macros"] }
 regex = "1.7.1"
 serde = "1.0"
 serde_derive = "1.0"
@@ -19,9 +19,8 @@ thiserror = "1.0.44"
 
 [dev-dependencies]
 assert_cmd = "1.0.2"
-cargo-release = "0.16.2"
 colored = "2.0"
-criterion = "0.3"
+criterion = "0.5.1"
 predicates = "1.0.8"
 
 [[bench]]
