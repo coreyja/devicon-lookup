@@ -74,9 +74,7 @@ impl Cli {
                         Err(e) => panic!("{}", e),
                     };
                 }
-                Err(MaybeUtf8LinesError::Utf8Error(e)) => {
-                    write_to_stdout(e.as_bytes())
-                }
+                Err(MaybeUtf8LinesError::Utf8Error(e)) => write_to_stdout(e.as_bytes()),
                 Err(e) => panic!("{}", e),
             }
         }
