@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased] - Release Date
+## [Unreleased] - ReleaseDate
 
 ### Bugfix
 
