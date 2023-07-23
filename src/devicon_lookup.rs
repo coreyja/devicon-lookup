@@ -6,8 +6,12 @@ pub mod parsers;
 
 pub const DEFAULT_SYMBOL: &str = "";
 
+pub trait ParserFn: Fn(String) -> ParserResult {}
+
+impl<T: Fn(String) -> ParserResult> ParserFn for T {}
+
 pub type ParserResult = Result<String, &'static str>;
-pub type Parser = dyn Fn(ParserResult) -> ParserResult;
+pub type Parser = dyn ParserFn;
 
 pub struct ParsedLine {
     original: String,
@@ -49,7 +53,7 @@ impl<'a> Line<'a> {
         let mut curr: ParserResult = Ok(self.original.clone());
 
         for parser in self.filename_parsers.iter() {
-            curr = parser(curr)
+            curr = parser(curr?)
         }
 
         let filename = curr?;
