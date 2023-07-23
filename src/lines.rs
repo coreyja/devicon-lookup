@@ -1,4 +1,7 @@
-use std::io::BufRead;
+use std::{
+    io::BufRead,
+    string::{self, FromUtf8Error},
+};
 
 #[derive(Debug)]
 pub struct Lines<B> {
@@ -12,20 +15,22 @@ impl<B> Lines<B> {
 }
 
 impl<B: BufRead> Iterator for Lines<B> {
-    type Item = Result<String, std::io::Error>;
+    type Item = Result<Result<String, FromUtf8Error>, std::io::Error>;
 
-    fn next(&mut self) -> Option<Result<String, std::io::Error>> {
-        let mut buf = String::new();
-        match self.buf.read_line(&mut buf) {
+    fn next(&mut self) -> Option<Self::Item> {
+        let mut buf = vec![];
+
+        match self.buf.read_until(b'\n', &mut buf) {
             Ok(0) => None,
             Ok(_n) => {
-                if buf.ends_with('\n') {
+                if buf.ends_with(&[b'\n']) {
                     buf.pop();
-                    if buf.ends_with('\r') {
+                    if buf.ends_with(&[b'\r']) {
                         buf.pop();
                     }
                 }
-                Some(Ok(buf))
+                let string = string::String::from_utf8(buf.clone());
+                Some(Ok(string))
             }
             Err(e) => Some(Err(e)),
         }

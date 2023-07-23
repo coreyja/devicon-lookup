@@ -4,7 +4,7 @@ extern crate lazy_static;
 extern crate serde_derive;
 
 use docopt::Docopt;
-use std::io::{self, BufRead};
+use std::io::{self, stdout, BufRead, Write};
 
 mod devicon_lookup;
 use devicon_lookup::*;
@@ -49,7 +49,8 @@ impl Cli {
 
         for line_result in lines_iter {
             match line_result {
-                Ok(line) => {
+                // IO Succeeded AND UTF8 Decoded
+                Ok(Ok(line)) => {
                     let line: Line = {
                         let mut line_builder = LineBuilder::new(line);
 
@@ -73,9 +74,12 @@ impl Cli {
                         Err(e) => panic!("{}", e),
                     };
                 }
-                Err(e) => {
-                    // dbg!(e);
+                // IO Succeeded BUT NOT UTF8 Encoded
+                Ok(Err(e)) => {
+                    // Write the raw bytes back to stdout
+                    io::stdout().lock().write_all(e.as_bytes()).unwrap();
                 }
+                Err(e) => panic!("{}", e),
             }
         }
     }
