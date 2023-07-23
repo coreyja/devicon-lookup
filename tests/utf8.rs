@@ -14,4 +14,13 @@ mod integration {
             .assert()
             .stdout(input_non_utf8);
     }
+
+    #[test]
+    fn calling_devicon_with_random_contents_does_not_error() {
+        Command::cargo_bin("devicon-lookup")
+            .unwrap()
+            .write_stdin(include_bytes!("fixtures/random_bytes.bin").to_vec())
+            .assert()
+            .success();
+    }
 }
