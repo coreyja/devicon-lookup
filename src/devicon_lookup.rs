@@ -78,10 +78,15 @@ impl ParsedLine {
     }
 
     pub fn print_with_symbol(&self) {
-        let write_result = &writeln!(&mut io::stdout(), "{} {}", self.symbol(), self.original);
+        let s = format!("{} {}\n", self.symbol(), self.original);
+        write_to_stdout(s.as_bytes())
+    }
+}
 
-        if write_result.is_err() {
-            ::std::process::exit(0)
-        }
+pub fn write_to_stdout(item: &[u8]) {
+    let write_result = io::stdout().write_all(&item);
+
+    if write_result.is_err() {
+        ::std::process::exit(0)
     }
 }

@@ -75,7 +75,7 @@ impl Cli {
                     };
                 }
                 Err(MaybeUtf8LinesError::Utf8Error(e)) => {
-                    io::stdout().lock().write_all(e.as_bytes()).unwrap();
+                    write_to_stdout(e.as_bytes())
                 }
                 Err(e) => panic!("{}", e),
             }
