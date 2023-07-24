@@ -18,7 +18,7 @@ serde_derive = "1.0"
 thiserror = "1.0.44"
 
 [dev-dependencies]
-assert_cmd = "1.0.2"
+assert_cmd = "2.0.12"
 colored = "2.0"
 criterion = "0.5.1"
 predicates = "1.0.8"
