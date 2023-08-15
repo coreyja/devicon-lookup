@@ -9,3 +9,6 @@ updates:
   allow:
   - dependency-type: direct
   - dependency-type: indirect
+  groups:
+    indirect:
+      dependency-type: indirect
