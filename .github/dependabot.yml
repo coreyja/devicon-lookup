@@ -8,4 +8,3 @@ updates:
   open-pull-requests-limit: 5
   allow:
   - dependency-type: direct
-  - dependency-type: indirect
