@@ -1,13 +1,7 @@
 use std::io::{self, Write};
-use ansi_term::Style;
+use std::path::Path;
 
-pub use crate::file::File;
-pub use crate::file_ext::FileExtensions;
-pub use crate::devicon_lookup::icon::FileIcon;
-pub use crate::devicon_lookup::color::FileColours;
-
-pub mod icon;
-pub mod color;
+mod map;
 pub mod parsers;
 
 pub trait ParserFn: Fn(String) -> ParserResult {}
@@ -19,7 +13,7 @@ pub type Parser = dyn ParserFn;
 
 pub struct ParsedLine {
     original: String,
-    file: File,
+    filename: String,
 }
 
 pub struct Line<'a> {
@@ -61,49 +55,34 @@ impl<'a> Line<'a> {
         }
 
         let filename = curr?;
+
         Ok(ParsedLine {
             original: self.original,
-            file: File::from_filename(filename)
+            filename,
         })
     }
 }
 
-pub const DEFAULT_FILE_SYMBOL: char = '\u{f15b}';   // 
-pub const DEFAULT_DIR_SYMBOL: char = '\u{f07c}';   // 
-
 impl ParsedLine {
-    fn symbol(&self) -> char {
-        let file_icon = Box::new(FileExtensions);
-
-        let icon = icon::find_exact_name(&self.file.name);
-
-        if icon.is_none() && self.file.is_dir {
-            return *icon::find_direcotry(&self.file.name)
-                    .unwrap_or(&DEFAULT_DIR_SYMBOL);
-        } if let Some(icon) = file_icon.custom_match(&self.file) { return icon; }
-        else if icon.is_none() && self.file.ext.is_some() {
-            return *icon::find_extension(&self.file.ext)
-                    .unwrap_or(&DEFAULT_FILE_SYMBOL);
-        }
-        return *icon.unwrap_or(&DEFAULT_FILE_SYMBOL);
+    fn is_directory(&self) -> Option<&str> {
+        Path::new(&self.filename).is_directory
+    }
+    fn extension(&self) -> Option<&str> {
+        Path::new(&self.filename).extension()?.to_str()
     }
 
-    fn color(&self) -> Style {
-        let file_color = Box::new(FileExtensions);
-        let style: Option<Style>;
-        if self.file.is_dir {
-            style = file_color.color_dir(&self.file);
+    fn symbol(&self) -> &str {
+        if self.is_directory() {
+            DEFAULT_SYMBOL
         }
-        else {
-            style = file_color.color_file(&self.file);
+        match self.extension() {
+            Some(extension) => map::find_symbol(extension),
+            None => DEFAULT_SYMBOL,
         }
-        return file_color.iconify_style(style.unwrap_or_default());
     }
 
     pub fn print_with_symbol(&self) {
-        let icon = self.symbol().to_string();
-        let colored_icon = self.color().paint(icon);
-        let s = format!("{} {}\n", colored_icon, self.original);
+        let s = format!("{} {}\n", self.symbol(), self.original);
         write_to_stdout(s.as_bytes())
     }
 }

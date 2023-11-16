@@ -16,6 +16,7 @@ regex = "1.9.3"
 serde = "1.0"
 serde_derive = "1.0"
 thiserror = "1.0.44"
+ansi_term = "0.12"
 
 [dev-dependencies]
 assert_cmd = "2.0.12"

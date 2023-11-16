@@ -15,6 +15,8 @@ const VERSION: &str = env!("CARGO_PKG_VERSION");
 const USAGE: &str = include_str!("USAGE.txt");
 
 mod lines;
+mod file;
+pub mod file_ext;
 
 #[derive(Debug, Deserialize)]
 struct Args {
