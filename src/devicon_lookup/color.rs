@@ -3,19 +3,22 @@ use ansi_term::Colour::*;
 pub use crate::file::File;
 pub use crate::file_ext::FileExtensions;
 
+pub fn iconify_style(style: Style) -> Style {
+   style.background.or(style.foreground)
+         .map(Style::from)
+         .unwrap_or_default()
+}
+
+pub fn default_color() -> Style {
+   iconify_style(Fixed(244).normal())
+}
+
 pub trait FileColours: std::marker::Sync {
-    fn iconify_style(&self, style: Style) -> Style;
     fn color_file(&self, file: &File) -> Option<Style>;
     fn color_dir(&self, file: &File) -> Option<Style>;
 }
 
 impl FileColours for FileExtensions {
-   fn iconify_style(&self, style: Style) -> Style {
-      style.background.or(style.foreground)
-            .map(Style::from)
-            .unwrap_or_default()
-   }
-
    fn color_file(&self, file: &File) -> Option<Style> {
       Some(match file {
          f if self.is_temp(f)           => Fixed(244).normal(),

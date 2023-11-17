@@ -21,6 +21,9 @@ pub mod file_ext;
 #[derive(Debug, Deserialize)]
 struct Args {
     flag_color: bool,
+    flag_iconcolor: bool,
+    flag_nameshort: bool,
+    flag_dirshort: bool,
     flag_version: bool,
     flag_regex: Option<String>,
     flag_prefix: Option<String>,
@@ -72,7 +75,7 @@ impl Cli {
                     };
 
                     match line.parse() {
-                        Ok(p) => p.print_with_symbol(),
+                        Ok(p) => p.print_with_symbol(self.args.flag_iconcolor, self.args.flag_nameshort, self.args.flag_dirshort),
                         Err(e) => panic!("{}", e),
                     };
                 }

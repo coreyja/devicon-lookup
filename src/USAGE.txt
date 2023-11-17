@@ -14,6 +14,15 @@
    Strip ANSI color codes from each line before processing them
    The original string with ANSI codes preserved is output
 
+   -i --iconcolor
+   Colorize icons
+
+   -n --nameshort
+   Shorten path to filename only
+
+   -d --dirshort
+   Shorten path with compact dirs
+
    -p --prefix=<delimiter>
    The filename is considered to be everything up to the given
    delimineter. The entire line is still output

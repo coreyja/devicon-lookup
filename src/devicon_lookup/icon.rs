@@ -11,6 +11,8 @@ pub enum Icons {
     Audio,
     Image,
     Video,
+    File,
+    Dir,
 }
 
 impl Icons {
@@ -19,6 +21,8 @@ impl Icons {
             Self::Audio  => '\u{f001}',
             Self::Image  => '\u{f1c5}',
             Self::Video  => '\u{f03d}',
+            Self::File   => '\u{f15b}',   // 
+            Self::Dir    => '\u{f07c}',   // 
         }
     }
 }
@@ -343,8 +347,11 @@ pub fn find_direcotry(filename: &str) -> Option<&char> {
     DIRECTORY_MAP.get(filename)
 }
 
-pub fn find_extension(extenstion: & Option<String>) -> Option<& char> {
-    EXTENSION_MAP.get(extenstion.clone().unwrap().as_str())
+pub fn find_extension<'a>(extension: &'a Option<String>) -> Option<&'a char> {
+    match extension {
+        Some(e) => EXTENSION_MAP.get(e),
+        None => None
+    }
 }
 
 pub trait FileIcon {

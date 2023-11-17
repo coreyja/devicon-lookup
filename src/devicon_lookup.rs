@@ -3,7 +3,7 @@ use ansi_term::Style;
 
 pub use crate::file::File;
 pub use crate::file_ext::FileExtensions;
-pub use crate::devicon_lookup::icon::FileIcon;
+pub use crate::devicon_lookup::icon::{FileIcon, Icons};
 pub use crate::devicon_lookup::color::FileColours;
 
 pub mod icon;
@@ -63,13 +63,11 @@ impl<'a> Line<'a> {
         let filename = curr?;
         Ok(ParsedLine {
             original: self.original,
-            file: File::from_filename(filename)
+            file: File::new(&filename)
         })
     }
 }
 
-pub const DEFAULT_FILE_SYMBOL: char = '\u{f15b}';   // 
-pub const DEFAULT_DIR_SYMBOL: char = '\u{f07c}';   // 
 
 impl ParsedLine {
     fn symbol(&self) -> char {
@@ -79,13 +77,13 @@ impl ParsedLine {
 
         if icon.is_none() && self.file.is_dir {
             return *icon::find_direcotry(&self.file.name)
-                    .unwrap_or(&DEFAULT_DIR_SYMBOL);
+                    .unwrap_or(&Icons::Dir.value());
         } if let Some(icon) = file_icon.custom_match(&self.file) { return icon; }
         else if icon.is_none() && self.file.ext.is_some() {
             return *icon::find_extension(&self.file.ext)
-                    .unwrap_or(&DEFAULT_FILE_SYMBOL);
+                    .unwrap_or(&Icons::File.value());
         }
-        return *icon.unwrap_or(&DEFAULT_FILE_SYMBOL);
+        return *icon.unwrap_or(&Icons::File.value());
     }
 
     fn color(&self) -> Style {
@@ -97,13 +95,25 @@ impl ParsedLine {
         else {
             style = file_color.color_file(&self.file);
         }
-        return file_color.iconify_style(style.unwrap_or_default());
+        return color::iconify_style(style.unwrap_or_default());
     }
 
-    pub fn print_with_symbol(&self) {
-        let icon = self.symbol().to_string();
-        let colored_icon = self.color().paint(icon);
-        let s = format!("{} {}\n", colored_icon, self.original);
+    pub fn print_with_symbol(&self, is_iconcolor: bool, is_nameshort: bool, is_dirshort: bool) {
+        // println!("{} {} {}\n", is_iconcolor, is_nameshort, is_dirshort);
+        let mut icon = self.symbol().to_string();
+        if is_iconcolor {
+            icon = self.color().paint(icon).to_string();
+        }
+
+        let mut path = self.original.clone();
+        if is_nameshort {
+            path = self.file.name.clone();
+        } else if is_dirshort {
+            let colored_dirs = color::default_color().paint(self.file.short_path());
+            path = format!("{:<20}{}", &self.file.name, colored_dirs);
+        }
+
+        let s = format!("{} {}\n", icon, path);
         write_to_stdout(s.as_bytes())
     }
 }
