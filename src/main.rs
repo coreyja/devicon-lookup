@@ -24,7 +24,9 @@ struct Args {
     flag_iconcolor: bool,
     flag_nameshort: bool,
     flag_dirshort: bool,
+    flag_dirshortreverse: bool,
     flag_version: bool,
+    flag_fzf: bool,
     flag_regex: Option<String>,
     flag_prefix: Option<String>,
 }
@@ -75,7 +77,7 @@ impl Cli {
                     };
 
                     match line.parse() {
-                        Ok(p) => p.print_with_symbol(self.args.flag_iconcolor, self.args.flag_nameshort, self.args.flag_dirshort),
+                        Ok(p) => p.print_with_symbol(self.args.flag_iconcolor, self.args.flag_nameshort, self.args.flag_dirshort, self.args.flag_dirshortreverse, self.args.flag_fzf),
                         Err(e) => panic!("{}", e),
                     };
                 }

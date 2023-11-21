@@ -9,8 +9,12 @@ pub fn iconify_style(style: Style) -> Style {
          .unwrap_or_default()
 }
 
-pub fn default_color() -> Style {
+pub fn detail_color() -> Style {
    iconify_style(Fixed(244).normal())
+}
+
+pub fn main_color() -> Style {
+   iconify_style(White.normal())
 }
 
 pub trait FileColours: std::marker::Sync {

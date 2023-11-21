@@ -22,6 +22,15 @@
 
    -d --dirshort
    Shorten path with compact dirs
+   
+   -D --dirshortreverse
+   Shorten path in reversed order
+   `Readme.md   <.release<coc-…tier<…<exte…ions<coc<.config`
+
+   -f --fzf
+   Output 2 arguments: full-path, path with icon, separated by Delimiter '!'
+   Use `-d!`, `--with-nth 2`, as fzf arguments
+   `fd | devicon -idf | fzf --ansi -d! --with-nth 2 | cut -f1 -d!`
 
    -p --prefix=<delimiter>
    The filename is considered to be everything up to the given

@@ -98,7 +98,7 @@ impl ParsedLine {
         return color::iconify_style(style.unwrap_or_default());
     }
 
-    pub fn print_with_symbol(&self, is_iconcolor: bool, is_nameshort: bool, is_dirshort: bool) {
+    pub fn print_with_symbol(&self, is_iconcolor: bool, is_nameshort: bool, is_dirshort: bool, is_dirshort_reversed: bool, is_fzf: bool) {
         // println!("{} {} {}\n", is_iconcolor, is_nameshort, is_dirshort);
         let mut icon = self.symbol().to_string();
         if is_iconcolor {
@@ -107,13 +107,19 @@ impl ParsedLine {
 
         let mut path = self.original.clone();
         if is_nameshort {
-            path = self.file.name.clone();
-        } else if is_dirshort {
-            let colored_dirs = color::default_color().paint(self.file.short_path());
-            path = format!("{:<20}{}", &self.file.name, colored_dirs);
+            path = color::main_color().paint(self.file.name.clone()).to_string();
+        } else if is_dirshort || is_dirshort_reversed {
+            let colored_dirs = color::detail_color().paint(self.file.short_path(is_dirshort_reversed));
+            let colored_name = color::main_color().paint(format!("{:<22}", self.file.name.clone()));
+            path = format!("{:<22}{}", colored_name, colored_dirs);
         }
 
-        let s = format!("{} {}\n", icon, path);
+        let s;
+        if is_fzf {
+            s = format!("{}!{} {}\n", self.original, icon, path);
+        } else {
+            s = format!("{} {}\n", icon, path);
+        }
         write_to_stdout(s.as_bytes())
     }
 }
