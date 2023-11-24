@@ -7,29 +7,19 @@ use docopt::Docopt;
 use lines::{IntoMaybeUt8Lines, MaybeUtf8LinesError};
 use miette::IntoDiagnostic;
 use std::io::{self};
-
-mod devicon_lookup;
-use devicon_lookup::*;
+use crate::args::Args;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 const USAGE: &str = include_str!("USAGE.txt");
 
 mod lines;
 mod file;
-pub mod file_ext;
+mod file_ext;
+mod args;
 
-#[derive(Debug, Deserialize)]
-struct Args {
-    flag_color: bool,
-    flag_iconcolor: bool,
-    flag_nameshort: bool,
-    flag_dirshort: bool,
-    flag_dirshortreverse: bool,
-    flag_version: bool,
-    flag_fzf: bool,
-    flag_regex: Option<String>,
-    flag_prefix: Option<String>,
-}
+
+mod devicon_lookup;
+use devicon_lookup::*;
 
 struct Cli {
     args: Args,
@@ -77,7 +67,7 @@ impl Cli {
                     };
 
                     match line.parse() {
-                        Ok(p) => p.print_with_symbol(self.args.flag_iconcolor, self.args.flag_nameshort, self.args.flag_dirshort, self.args.flag_dirshortreverse, self.args.flag_fzf),
+                        Ok(p) => p.print_with_symbol(&self.args),
                         Err(e) => panic!("{}", e),
                     };
                 }

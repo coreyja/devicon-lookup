@@ -17,6 +17,10 @@
    -i --iconcolor
    Colorize icons
 
+   -l --long
+   long format output: icon filename path
+  `Readme.md   /src/proj/`
+
    -n --nameshort
    Shorten path to filename only
 

@@ -17,11 +17,16 @@ impl File {
             .filter(|&x| !x.is_empty())
             .map(str::to_string).collect();
         let last_i = path_arr.len() - 1;
-        let name = File::short_path_part(&path_arr[last_i], true);
+        let name = path_arr[last_i].clone();
         path_arr.remove(last_i);
 
+        let path = path_arr.iter()
+            .map(|x| x.to_string())
+            .collect::<Vec<_>>()
+            .join(std::path::MAIN_SEPARATOR_STR) + std::path::MAIN_SEPARATOR_STR;
+
         File {
-            path: filename.clone(), 
+            path,
             path_arr,
             name,
             ext: File::ext(filename),
@@ -85,7 +90,7 @@ impl File {
             .join(join_symbol)
     }
 
-    fn short_path_part(e: &String, is_ext_size: bool) -> String {
+    pub fn short_path_part(e: &String, is_ext_size: bool) -> String {
         let r: String;
         let max_len = if is_ext_size { 20 } else {10};
 
