@@ -148,11 +148,17 @@ impl ParsedLine {
                 format!("{} {}{}", icon, path, name )
             };
 
-        let s;
+        let mut s;
         if args.flag_fzf {
-            s = format!("{}!{}\n", self.original, out);
+            s = format!("{}!{}", &self.file.full_path, out);
         } else {
-            s = format!("{}\n", out);
+            s = format!("{}", out);
+        }
+
+        if args.flag_substitute {
+            s = format!("{}\n", self.original.replace(&self.file.full_path, &s));
+        } else {
+            s = s + "\n";
         }
         write_to_stdout(s.as_bytes())
     }

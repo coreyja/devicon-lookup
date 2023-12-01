@@ -10,10 +10,6 @@
 
    --version                      Show version.
 
-   -c --color
-   Strip ANSI color codes from each line before processing them
-   The original string with ANSI codes preserved is output
-
    -i --iconcolor
    Colorize icons
 
@@ -36,6 +32,10 @@
    Use `-d!`, `--with-nth 2`, as fzf arguments
    `fd | devicon -idf | fzf --ansi -d! --with-nth 2 | cut -f1 -d!`
 
+   -c --color
+   Strip ANSI color codes from each line before processing them
+   The original string with ANSI codes preserved is output
+
    -p --prefix=<delimiter>
    The filename is considered to be everything up to the given
    delimineter. The entire line is still output
@@ -45,3 +45,6 @@
    Regex's must be valid based on the Rust `regex` crate
    The regex is expected to have a single capture group,
    which contains the filename. Extra capture groups are ignored
+
+   -s --substitute
+   don't remove original text, substitute with iconed instead

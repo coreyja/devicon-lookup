@@ -10,4 +10,5 @@ pub struct Args {
    pub flag_fzf: bool,
    pub flag_regex: Option<String>,
    pub flag_prefix: Option<String>,
+   pub flag_substitute: bool,
 }

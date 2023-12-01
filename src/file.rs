@@ -1,6 +1,7 @@
 use regex::RegexSet;
 
 pub struct File {
+    pub full_path: String,
     pub path: String,
     pub path_arr: Vec<String>,
     pub ext: Option<String>,
@@ -11,8 +12,8 @@ pub struct File {
 pub const DOTS: &str = "…";
 
 impl File {
-    pub fn new(filename: &String) -> File {
-        let mut path_arr: Vec<String> = filename
+    pub fn new(full_path: &String) -> File {
+        let mut path_arr: Vec<String> = full_path
             .split(std::path::MAIN_SEPARATOR_STR)
             .filter(|&x| !x.is_empty())
             .map(str::to_string).collect();
@@ -26,21 +27,22 @@ impl File {
             .join(std::path::MAIN_SEPARATOR_STR) + std::path::MAIN_SEPARATOR_STR;
 
         File {
+            full_path: full_path.clone(),
             path,
             path_arr,
             name,
-            ext: File::ext(filename),
-            is_dir: File::is_dir(filename),
+            ext: File::ext(full_path),
+            is_dir: File::is_dir(full_path),
         }
     }
 
-    fn ext(filename: &String) -> Option<String> {
-        filename.rfind('.')
-            .map(|p| filename[p + 1 ..].to_owned())
+    fn ext(full_path: &String) -> Option<String> {
+        full_path.rfind('.')
+            .map(|p| full_path[p + 1 ..].to_owned())
     }       
     
-    fn is_dir(filename: &String) -> bool {
-        filename.ends_with(std::path::MAIN_SEPARATOR_STR)
+    fn is_dir(full_path: &String) -> bool {
+        full_path.ends_with(std::path::MAIN_SEPARATOR_STR)
     } 
 
     pub fn short_path(&self, is_reversed: bool) -> String {
