@@ -9,6 +9,7 @@ mod integration {
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
         cmd.arg("--prefix")
             .arg(":")
+            .arg("-s")
             .write_stdin("test.rs: someline of the file".to_string())
             .assert()
             .stdout(" test.rs: someline of the file\n");
@@ -19,9 +20,10 @@ mod integration {
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
         cmd.arg("--prefix")
             .arg("pre")
+            .arg("-s")
             .write_stdin("test.rspre stuff after\ntest.rs\nrust.txtpr".to_string())
             .assert()
-            .stdout(" test.rspre stuff after\n test.rs\n rust.txtpr\n");
+            .stdout(" test.rspre stuff after\n test.rs\n rust.txtpr\n");
     }
 
     #[test]
@@ -29,9 +31,10 @@ mod integration {
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
         cmd.arg("-p")
             .arg("@")
+            .arg("-s")
             .write_stdin("test.rs: someline of the file\ntest.rs".to_string())
             .assert()
             .success()
-            .stdout(" test.rs: someline of the file\n test.rs\n".to_string());
+            .stdout(" test.rs: someline of the file\n test.rs\n".to_string());
     }
 }

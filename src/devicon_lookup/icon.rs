@@ -1,6 +1,6 @@
-use phf::phf_map;
 pub use crate::file::File;
 pub use crate::file_ext::FileExtensions;
+use phf::phf_map;
 
 use regex::RegexSet;
 
@@ -18,11 +18,11 @@ pub enum Icons {
 impl Icons {
     pub fn value(self) -> char {
         match self {
-            Self::Audio  => '\u{f001}',
-            Self::Image  => '\u{f1c5}',
-            Self::Video  => '\u{f03d}',
-            Self::File   => '\u{f15b}',   // 
-            Self::Dir    => '\u{f07c}',   // 
+            Self::Audio => '\u{f001}',
+            Self::Image => '\u{f1c5}',
+            Self::Video => '\u{f03d}',
+            Self::File => '\u{f15b}', // 
+            Self::Dir => '\u{f07c}',  // 
         }
     }
 }
@@ -313,7 +313,7 @@ static EXTENSION_MAP: phf::Map<&'static str, char> = phf_map! {
     "tzo"           => '\u{f410}', // 
     "video"         => '\u{f03d}', // 
     "vim"           => '\u{e62b}', // 
-    "vue"           => '\u{fd42}', // ﵂
+    "vue"           => '\u{e6a0}', // ﵂
     "war"           => '\u{e256}', // 
     "wav"           => '\u{f001}', // 
     "webm"          => '\u{f03d}', // 
@@ -350,7 +350,7 @@ pub fn find_direcotry(filename: &str) -> Option<&char> {
 pub fn find_extension<'a>(extension: &'a Option<String>) -> Option<&'a char> {
     match extension {
         Some(e) => EXTENSION_MAP.get(e),
-        None => None
+        None => None,
     }
 }
 
@@ -361,34 +361,22 @@ pub trait FileIcon {
 impl FileIcon for FileExtensions {
     fn custom_match(&self, file: &File) -> Option<char> {
         lazy_static! {
-            static ref SET_VIM_NAME: RegexSet = RegexSet::new(&[
-                r".*vim.*",
-            ]).unwrap();
-            static ref SET_VIM_EXT: RegexSet = RegexSet::new(&[
-                r".*vim.*",
-            ]).unwrap();
-            static ref SET_SH_EXT: RegexSet = RegexSet::new(&[
-                r".*bash.*",
-                r".*zsh.*",
-                r"^sh_",
-                r"_sh$",
-            ]).unwrap();
+            static ref SET_VIM_NAME: RegexSet = RegexSet::new(&[r".*vim.*",]).unwrap();
+            static ref SET_VIM_EXT: RegexSet = RegexSet::new(&[r".*vim.*",]).unwrap();
+            static ref SET_SH_EXT: RegexSet =
+                RegexSet::new(&[r".*bash.*", r".*zsh.*", r"^sh_", r"_sh$",]).unwrap();
         }
         if self.is_music(file) || self.is_lossless(file) {
             Some(Icons::Audio.value())
-        }
-        else if self.is_image(file) {
+        } else if self.is_image(file) {
             Some(Icons::Image.value())
-        }
-        else if self.is_video(file) {
+        } else if self.is_video(file) {
             Some(Icons::Video.value())
-        } else if file.extension_matches_set( &SET_VIM_EXT ) ||
-                  file.name_matches_set( &SET_VIM_NAME ) {
+        } else if file.extension_matches_set(&SET_VIM_EXT) || file.name_matches_set(&SET_VIM_NAME) {
             Some('\u{e62b}')
-        } else if file.extension_matches_set( &SET_SH_EXT ) {
+        } else if file.extension_matches_set(&SET_SH_EXT) {
             Some('\u{ebc7}')
-        }
-        else {
+        } else {
             None
         }
     }

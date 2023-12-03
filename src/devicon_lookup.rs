@@ -1,14 +1,14 @@
-use std::io::{self, Write};
 use ansi_term::Style;
+use std::io::{self, Write};
 
+use crate::args::Args;
+pub use crate::devicon_lookup::color::FileColours;
+pub use crate::devicon_lookup::icon::{FileIcon, Icons};
 pub use crate::file::File;
 pub use crate::file_ext::FileExtensions;
-pub use crate::devicon_lookup::icon::{FileIcon, Icons};
-pub use crate::devicon_lookup::color::FileColours;
-use crate::args::Args;
 
-pub mod icon;
 pub mod color;
+pub mod icon;
 pub mod parsers;
 
 pub trait ParserFn: Fn(String) -> ParserResult {}
@@ -64,11 +64,10 @@ impl<'a> Line<'a> {
         let filename = curr?;
         Ok(ParsedLine {
             original: self.original,
-            file: File::new(&filename)
+            file: File::new(&filename),
         })
     }
 }
-
 
 impl ParsedLine {
     fn symbol(&self) -> char {
@@ -77,12 +76,12 @@ impl ParsedLine {
         let icon = icon::find_exact_name(&self.file.name);
 
         if icon.is_none() && self.file.is_dir {
-            return *icon::find_direcotry(&self.file.name)
-                    .unwrap_or(&Icons::Dir.value());
-        } if let Some(icon) = file_icon.custom_match(&self.file) { return icon; }
-        else if icon.is_none() && self.file.ext.is_some() {
-            return *icon::find_extension(&self.file.ext)
-                    .unwrap_or(&Icons::File.value());
+            return *icon::find_direcotry(&self.file.name).unwrap_or(&Icons::Dir.value());
+        }
+        if let Some(icon) = file_icon.custom_match(&self.file) {
+            return icon;
+        } else if icon.is_none() && self.file.ext.is_some() {
+            return *icon::find_extension(&self.file.ext).unwrap_or(&Icons::File.value());
         }
         return *icon.unwrap_or(&Icons::File.value());
     }
@@ -92,8 +91,7 @@ impl ParsedLine {
         let style: Option<Style>;
         if self.file.is_dir {
             style = file_color.color_dir(&self.file);
-        }
-        else {
+        } else {
             style = file_color.color_file(&self.file);
         }
         return color::iconify_style(style.unwrap_or_default());
@@ -104,61 +102,72 @@ impl ParsedLine {
         if flag_iconcolor {
             icon = self.color().paint(icon).to_string();
         }
-        icon        
+        icon
     }
 
     fn get_name(&self, flag_long: bool, flag_nameshort: bool) -> String {
-        let name = 
-            if flag_nameshort {
-                File::short_path_part(&self.file.name.clone(), true)
-            } else {
-                self.file.name.clone()
-            };
+        let name = if flag_nameshort {
+            File::short_path_part(&self.file.name.clone(), true)
+        } else {
+            self.file.name.clone()
+        };
         if flag_long {
-            color::main_color().paint(format!("{:<22}", name)).to_string()
+            color::main_color()
+                .paint(format!("{:<22}", name))
+                .to_string()
         } else {
             name
         }
     }
 
     fn get_path(&self, flag_long: bool, flag_dirshort: bool, flag_dirshortreverse: bool) -> String {
-        let path =
-            if flag_dirshort || flag_dirshortreverse {
-                self.file.short_path(flag_dirshortreverse)
-            } else {
-                self.file.path.clone()
-            };
+        let path = if flag_dirshort || flag_dirshortreverse {
+            self.file.short_path(flag_dirshortreverse)
+        } else {
+            self.file.path.clone()
+        };
 
         if flag_long {
             color::detail_color().paint(path).to_string()
         } else {
             path
-        }            
+        }
     }
 
     pub fn print_with_symbol(&self, args: &Args) {
         let icon = self.get_icon(args.flag_iconcolor);
         let name = self.get_name(args.flag_long, args.flag_nameshort);
-        let path = self.get_path(args.flag_long, args.flag_dirshort, args.flag_dirshortreverse);
+        let path = self.get_path(
+            args.flag_long,
+            args.flag_dirshort,
+            args.flag_dirshortreverse,
+        );
 
-        let out = 
-            if args.flag_long {
-                format!("{} {}{}", icon, name, path )                
-            } else {
-                format!("{} {}{}", icon, path, name )
-            };
-
-        let mut s;
-        if args.flag_fzf {
-            s = format!("{}!{}", &self.file.full_path, out);
+        let path_name = if args.flag_long {
+            format!("{}{}", name, path)
         } else {
-            s = format!("{}", out);
-        }
+            format!("{}{}", path, name)
+        };
+
+        let mut s = if args.flag_color {
+            format!(
+                "{} {}",
+                icon,
+                self.original.replace(&self.file.full_path, &path_name)
+            )
+        } else {
+            format!("{} {}", icon, path_name)
+        };
 
         if args.flag_substitute {
-            s = format!("{}\n", self.original.replace(&self.file.full_path, &s));
-        } else {
-            s = s + "\n";
+            s = format!("{}", self.original.replace(&self.file.full_path, &s));
+        }
+
+        if args.flag_fzf {
+            s = format!("{}!{}", &self.file.full_path, s);
+        }
+        if !s.ends_with("\n") {
+            s += "\n";
         }
         write_to_stdout(s.as_bytes())
     }

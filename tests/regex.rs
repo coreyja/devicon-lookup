@@ -20,6 +20,7 @@ mod integration {
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
         cmd.arg("--regex")
             .arg("^(.*):")
+            .arg("-s")
             .write_stdin("test.rs: someline of the file".to_string())
             .assert()
             .stdout(" test.rs: someline of the file\n");

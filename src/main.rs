@@ -3,20 +3,19 @@ extern crate lazy_static;
 #[macro_use]
 extern crate serde_derive;
 
+use crate::args::Args;
 use docopt::Docopt;
 use lines::{IntoMaybeUt8Lines, MaybeUtf8LinesError};
 use miette::IntoDiagnostic;
 use std::io::{self};
-use crate::args::Args;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 const USAGE: &str = include_str!("USAGE.txt");
 
-mod lines;
+mod args;
 mod file;
 mod file_ext;
-mod args;
-
+mod lines;
 
 mod devicon_lookup;
 use devicon_lookup::*;
