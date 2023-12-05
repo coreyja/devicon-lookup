@@ -27,6 +27,14 @@
    Shorten path in reversed order
    `Readme.md   <.release<coc-…tier<…<exte…ions<coc<.config`
 
+   --nodir
+   only file name outputed
+
+   -a --align <num>
+   align name with spaces
+    `-a 5` '/file/t'  -> 't    /file'
+    `-a 5` '/file/ta' -> 'ta   /file'
+
    -f --fzf
    Output 2 arguments: full-path, path with icon, separated by Delimiter '!'
    Use `-d!`, `--with-nth 2`, as fzf arguments

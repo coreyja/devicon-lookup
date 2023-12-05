@@ -105,22 +105,36 @@ impl ParsedLine {
         icon
     }
 
-    fn get_name(&self, flag_long: bool, flag_nameshort: bool) -> String {
+    fn get_name(&self, flag_long: bool, flag_nameshort: bool, flag_align: Option<usize>) -> String {
         let name = if flag_nameshort {
             File::short_path_part(&self.file.name.clone(), true)
         } else {
             self.file.name.clone()
         };
         if flag_long {
+            let out_name = match flag_align {
+                Some(i) => {
+                    let len = i - name.len() - 1;
+                    if i > name.len() + 1 {
+                        return name + &" ".repeat(len);
+                    }
+                    return name;
+                },
+                None => name
+            };
+            // .paint(format!("{:<22}", name))
             color::main_color()
-                .paint(format!("{:<22}", name))
+                .paint(out_name)
                 .to_string()
         } else {
             name
         }
     }
 
-    fn get_path(&self, flag_long: bool, flag_dirshort: bool, flag_dirshortreverse: bool) -> String {
+    fn get_path(&self, flag_long: bool, flag_dirshort: bool, flag_dirshortreverse: bool, flag_nodir: bool) -> String {
+        if flag_nodir {
+            return "".to_string();
+        }
         let path = if flag_dirshort || flag_dirshortreverse {
             self.file.short_path(flag_dirshortreverse)
         } else {
@@ -136,15 +150,19 @@ impl ParsedLine {
 
     pub fn print_with_symbol(&self, args: &Args) {
         let icon = self.get_icon(args.flag_iconcolor);
-        let name = self.get_name(args.flag_long, args.flag_nameshort);
+        
+        let name = self.get_name(args.flag_long, args.flag_nameshort, args.flag_align);
         let path = self.get_path(
             args.flag_long,
             args.flag_dirshort,
             args.flag_dirshortreverse,
+            args.flag_nodir
         );
 
-        let path_name = if args.flag_long {
-            format!("{}{}", name, path)
+        let path_name = if args.flag_nodir {
+            name
+        } else if args.flag_long {
+            format!("{} {}", name, path)
         } else {
             format!("{}{}", path, name)
         };
@@ -159,7 +177,7 @@ impl ParsedLine {
             format!("{} {}", icon, path_name)
         };
 
-        if args.flag_substitute {
+        if args.flag_substitute || args.flag_prefix.is_some() {
             s = format!("{}", self.original.replace(&self.file.full_path, &s));
         }
 
