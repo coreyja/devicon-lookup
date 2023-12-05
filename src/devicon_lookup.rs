@@ -119,19 +119,23 @@ impl ParsedLine {
                         return name + &" ".repeat(len);
                     }
                     return name;
-                },
-                None => name
+                }
+                None => name,
             };
             // .paint(format!("{:<22}", name))
-            color::main_color()
-                .paint(out_name)
-                .to_string()
+            color::main_color().paint(out_name).to_string()
         } else {
             name
         }
     }
 
-    fn get_path(&self, flag_long: bool, flag_dirshort: bool, flag_dirshortreverse: bool, flag_nodir: bool) -> String {
+    fn get_path(
+        &self,
+        flag_long: bool,
+        flag_dirshort: bool,
+        flag_dirshortreverse: bool,
+        flag_nodir: bool,
+    ) -> String {
         if flag_nodir {
             return "".to_string();
         }
@@ -150,13 +154,13 @@ impl ParsedLine {
 
     pub fn print_with_symbol(&self, args: &Args) {
         let icon = self.get_icon(args.flag_iconcolor);
-        
+
         let name = self.get_name(args.flag_long, args.flag_nameshort, args.flag_align);
         let path = self.get_path(
             args.flag_long,
             args.flag_dirshort,
             args.flag_dirshortreverse,
-            args.flag_nodir
+            args.flag_nodir,
         );
 
         let path_name = if args.flag_nodir {
