@@ -12,7 +12,7 @@ impl FileExtensions {
     /// in directories full of source code.
     #[allow(clippy::case_sensitive_file_extension_comparisons)]
     pub fn is_immediate(&self, file: &File) -> bool {
-        file.name.ends_with(".ninja")
+        file.name().ends_with(".ninja")
             || file.name_is_one_of(&[
                 "Makefile",
                 "Cargo.toml",
@@ -141,8 +141,8 @@ impl FileExtensions {
     }
 
     pub fn is_temp(&self, file: &File) -> bool {
-        file.name.ends_with('~')
-            || (file.name.starts_with('#') && file.name.ends_with('#'))
+        file.name().ends_with('~')
+            || (file.name().starts_with('#') && file.name().ends_with('#'))
             || file.extension_is_one_of(&["tmp", "swp", "swo", "swn", "bak", "bkp", "bk"])
             || file.extension_is_one_of(&["tmp", "swp", "swo", "swn", "bak", "bkp", "bk"])
     }

@@ -73,15 +73,15 @@ impl ParsedLine {
     fn symbol(&self) -> char {
         let file_icon = Box::new(FileExtensions);
 
-        let icon = icon::find_exact_name(&self.file.name);
+        let icon = icon::find_exact_name(&self.file.name());
 
-        if icon.is_none() && self.file.is_dir {
-            return *icon::find_direcotry(&self.file.name).unwrap_or(&Icons::Dir.value());
+        if icon.is_none() && self.file.is_dir() {
+            return *icon::find_direcotry(&self.file.name()).unwrap_or(&Icons::Dir.value());
         }
         if let Some(icon) = file_icon.custom_match(&self.file) {
             return icon;
-        } else if icon.is_none() && self.file.ext.is_some() {
-            return *icon::find_extension(&self.file.ext).unwrap_or(&Icons::File.value());
+        } else if icon.is_none() && self.file.ext().is_some() {
+            return *icon::find_extension(&self.file.ext()).unwrap_or(&Icons::File.value());
         }
         return *icon.unwrap_or(&Icons::File.value());
     }
@@ -89,7 +89,7 @@ impl ParsedLine {
     fn color(&self) -> Style {
         let file_color = Box::new(FileExtensions);
         let style: Option<Style>;
-        if self.file.is_dir {
+        if self.file.is_dir() {
             style = file_color.color_dir(&self.file);
         } else {
             style = file_color.color_file(&self.file);
@@ -107,9 +107,9 @@ impl ParsedLine {
 
     fn get_name(&self, flag_long: bool, flag_nameshort: bool, flag_align: Option<usize>) -> String {
         let name = if flag_nameshort {
-            File::short_path_part(&self.file.name.clone(), true)
+            File::short_path_part(&self.file.name(), true)
         } else {
-            self.file.name.clone()
+            self.file.name().to_owned()
         };
         if flag_long {
             let out_name = match flag_align {
@@ -142,7 +142,7 @@ impl ParsedLine {
         let path = if flag_dirshort || flag_dirshortreverse {
             self.file.short_path(flag_dirshortreverse)
         } else {
-            self.file.path.clone()
+            self.file.path().to_owned()
         };
 
         if flag_long {
@@ -175,18 +175,18 @@ impl ParsedLine {
             format!(
                 "{} {}",
                 icon,
-                self.original.replace(&self.file.full_path, &path_name)
+                self.original.replace(&self.file.full_path(), &path_name)
             )
         } else {
             format!("{} {}", icon, path_name)
         };
 
         if args.flag_substitute || args.flag_prefix.is_some() {
-            s = format!("{}", self.original.replace(&self.file.full_path, &s));
+            s = format!("{}", self.original.replace(&self.file.full_path(), &s));
         }
 
         if args.flag_fzf {
-            s = format!("{}!{}", &self.file.full_path, s);
+            s = format!("{}!{}", &self.file.full_path(), s);
         }
         if !s.ends_with("\n") {
             s += "\n";

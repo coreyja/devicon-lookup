@@ -3,11 +3,11 @@ use regex::RegexSet;
 
 #[derive(Debug)]
 pub struct File {
-    pub full_path: String,
-    pub path: String,
-    pub ext: Option<String>,
-    pub is_dir: bool,
-    pub name: String,
+    full_path: String,
+    path: String,
+    ext: Option<String>,
+    is_dir: bool,
+    name: String,
 }
 
 pub const DOTS: &str = "…";
@@ -97,7 +97,7 @@ impl File {
             .join(join_symbol)
     }
 
-    pub fn short_path_part(e: &String, is_ext_size: bool) -> String {
+    pub fn short_path_part(e: &str, is_ext_size: bool) -> String {
         let r: String;
         let max_len = if is_ext_size { 20 } else { 10 };
 
@@ -110,7 +110,7 @@ impl File {
                 .collect();
             r = a + DOTS + &b;
         } else {
-            r = e.clone()
+            r = e.to_owned()
         }
         r
     }
@@ -133,5 +133,25 @@ impl File {
     }
     pub fn name_matches_set(&self, set: &RegexSet) -> bool {
         set.is_match(&&self.name[..])
+    }
+
+    pub(crate) fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub(crate) fn is_dir(&self) -> bool {
+        self.is_dir
+    }
+
+    pub(crate) fn ext(&self) -> &Option<String> {
+        &self.ext
+    }
+
+    pub(crate) fn path(&self) -> &str {
+        &self.path
+    }
+
+    pub(crate) fn full_path(&self) -> &str {
+        &self.full_path
     }
 }
