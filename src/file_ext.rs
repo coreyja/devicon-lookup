@@ -15,6 +15,7 @@ impl FileExtensions {
             static ref SET_SH_EXT: RegexSet =
                 RegexSet::new(&[r".*bash.*", r".*zsh.*", r"^sh_", r"_sh$",]).unwrap();
         }
+
         if FileExtensions::is_music(file) || FileExtensions::is_lossless(file) {
             Some(Icons::Audio.value())
         } else if FileExtensions::is_image(file) {

@@ -78,7 +78,7 @@ impl File {
 
     pub fn extension_is_one_of(&self, choices: &[&str]) -> bool {
         match &self.ext() {
-            Some(ext) => choices.contains(&&ext[..]),
+            Some(ext) => choices.contains(ext),
             None => false,
         }
     }

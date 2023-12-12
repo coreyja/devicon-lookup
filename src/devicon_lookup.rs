@@ -70,55 +70,60 @@ impl<'a> Line<'a> {
 
 impl ParsedLine {
     fn symbol(&self) -> char {
-        let icon = icon::find_exact_name(&self.file.name());
-
-        if icon.is_none() && self.file.is_dir() {
-            return *icon::find_direcotry(&self.file.name()).unwrap_or(&Icons::Dir.value());
-        }
         if let Some(icon) = FileExtensions::custom_match(&self.file) {
             return icon;
-        } else if icon.is_none() && self.file.ext().is_some() {
-            return *icon::find_extension(&self.file.ext()).unwrap_or(&Icons::File.value());
         }
-        return *icon.unwrap_or(&Icons::File.value());
+
+        if let Some(icon) = icon::find_exact_name(self.file.name()) {
+            return icon;
+        }
+
+        if self.file.is_dir() {
+            return icon::find_directory(self.file.name()).unwrap_or(Icons::Dir.value());
+        }
+
+        if let Some(ext) = self.file.ext() {
+            return icon::find_extension(ext).unwrap_or(Icons::File.value());
+        }
+
+        Icons::File.value()
     }
 
     fn color(&self) -> Style {
-        let style: Option<Style>;
-        if self.file.is_dir() {
-            style = FileExtensions::color_dir(&self.file);
+        let style = if self.file.is_dir() {
+            FileExtensions::color_dir(&self.file)
         } else {
-            style = FileExtensions::color_file(&self.file);
-        }
-        return color::iconify_style(style.unwrap_or_default());
+            FileExtensions::color_file(&self.file)
+        };
+
+        color::iconify_style(style.unwrap_or_default())
     }
 
     fn get_icon(&self, flag_iconcolor: bool) -> String {
-        let mut icon = self.symbol().to_string();
+        let symbol = self.symbol().to_string();
+
         if flag_iconcolor {
-            icon = self.color().paint(icon).to_string();
+            self.color().paint(symbol).to_string()
+        } else {
+            symbol
         }
-        icon
     }
 
     fn get_name(&self, flag_long: bool, flag_nameshort: bool, flag_align: Option<usize>) -> String {
         let name = if flag_nameshort {
-            File::short_path_part(&self.file.name(), true)
+            File::short_path_part(self.file.name(), true)
         } else {
             self.file.name().to_owned()
         };
+
         if flag_long {
             let out_name = match flag_align {
-                Some(i) => {
-                    let len = i - name.len() - 1;
-                    if i > name.len() + 1 {
-                        return name + &" ".repeat(len);
-                    }
-                    return name;
+                Some(width) => {
+                    // We can use format! with a width specifier to align the output
+                    format!("{:width$}", name)
                 }
                 None => name,
             };
-            // .paint(format!("{:<22}", name))
             color::main_color().paint(out_name).to_string()
         } else {
             name
@@ -135,6 +140,7 @@ impl ParsedLine {
         if flag_nodir {
             return "".to_string();
         }
+
         let path = if flag_dirshort || flag_dirshortreverse {
             self.file.short_path(flag_dirshortreverse)
         } else {
@@ -171,20 +177,20 @@ impl ParsedLine {
             format!(
                 "{} {}",
                 icon,
-                self.original.replace(&self.file.full_path(), &path_name)
+                self.original.replace(self.file.full_path(), &path_name)
             )
         } else {
             format!("{} {}", icon, path_name)
         };
 
         if args.flag_substitute || args.flag_prefix.is_some() {
-            s = format!("{}", self.original.replace(&self.file.full_path(), &s));
+            s = self.original.replace(self.file.full_path(), &s);
         }
 
         if args.flag_fzf {
             s = format!("{}!{}", &self.file.full_path(), s);
         }
-        if !s.ends_with("\n") {
+        if !s.ends_with('\n') {
             s += "\n";
         }
         write_to_stdout(s.as_bytes())

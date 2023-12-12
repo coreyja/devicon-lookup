@@ -337,17 +337,18 @@ static EXTENSION_MAP: phf::Map<&'static str, char> = phf_map! {
     "7z"            => '\u{f410}', // 
 };
 
-pub fn find_exact_name(filename: &str) -> Option<&char> {
-    EXACT_NAME_MAP.get(filename)
+pub fn find_exact_name(filename: &str) -> Option<char> {
+    // I made this method the ones below return `Option<char>` instead of `Option<&char>`
+    // I did this since `char` is Copy in Rust so its 'easy' to make a new one by dereferencing.
+    // The only usage of this dereferenced the return value right away so I thought it made since
+    // for this to just return a `char` directly
+    EXACT_NAME_MAP.get(filename).copied()
 }
 
-pub fn find_direcotry(filename: &str) -> Option<&char> {
-    DIRECTORY_MAP.get(filename)
+pub fn find_directory(filename: &str) -> Option<char> {
+    DIRECTORY_MAP.get(filename).copied()
 }
 
-pub fn find_extension<'a>(extension: &'a Option<&str>) -> Option<&'a char> {
-    match extension {
-        Some(e) => EXTENSION_MAP.get(e),
-        None => None,
-    }
+pub fn find_extension<'a>(extension: &str) -> Option<char> {
+    EXTENSION_MAP.get(extension).copied()
 }
