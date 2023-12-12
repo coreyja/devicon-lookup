@@ -115,7 +115,7 @@ impl ParsedLine {
         } else {
             self.file.name().to_owned()
         };
-        
+
         if self.file.is_dir() {
             name.push(std::path::MAIN_SEPARATOR);
         }

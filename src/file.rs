@@ -29,7 +29,7 @@ impl File {
             .components()
             .filter(|&x| x != Component::RootDir)
             .collect::<PathBuf>();
-        
+
         let component_count = filtered_parent.components().count();
 
         let join_symbol = if is_reversed {
@@ -74,8 +74,7 @@ impl File {
             })
             .join(join_symbol);
 
-        if component_count > 0 
-                && (is_reversed || filtered_parent != parent) {
+        if component_count > 0 && (is_reversed || filtered_parent != parent) {
             format!("{join_symbol}{short_path}")
         } else {
             short_path
