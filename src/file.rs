@@ -1,11 +1,12 @@
 use itertools::Itertools;
 use regex::RegexSet;
-use std::path::PathBuf;
+use std::path::{Component, PathBuf};
 
 #[derive(Debug)]
 pub struct File {
     original: String,
     path: PathBuf,
+    is_dir: bool,
 }
 
 pub const DOTS: &str = "…";
@@ -17,12 +18,19 @@ impl File {
         File {
             original,
             path: PathBuf::from(full_path),
+            is_dir: full_path.ends_with(std::path::MAIN_SEPARATOR),
         }
     }
 
     pub fn short_path(&self, is_reversed: bool) -> String {
         let parent = self.path.parent().unwrap();
-        let component_count = parent.components().count();
+
+        let filtered_parent = parent
+            .components()
+            .filter(|&x| x != Component::RootDir)
+            .collect::<PathBuf>();
+        
+        let component_count = filtered_parent.components().count();
 
         let join_symbol = if is_reversed {
             "<"
@@ -31,32 +39,47 @@ impl File {
         };
 
         let iter: Box<dyn Iterator<Item = _>> = if is_reversed {
-            Box::new(parent.components().rev())
+            Box::new(filtered_parent.components().rev())
         } else {
-            Box::new(parent.components())
+            Box::new(filtered_parent.components())
         };
+
+        let mut is_dots_added = false;
+        let save_n_first_dir = 2;
+        let save_n_last_dir = 2;
 
         let short_path = iter
             .enumerate()
-            .map(|(i, component)| -> String {
-                if i < 3 || component_count - i <= 2 {
+            .filter_map(|(i, component)| -> Option<String> {
+                if component == Component::RootDir {
+                    return None;
+                }
+                if i < save_n_first_dir || component_count - i <= save_n_last_dir {
                     let is_innermost_dir = if is_reversed {
                         i == 0
                     } else {
                         i == component_count - 1
                     };
 
-                    File::short_path_part(
+                    Some(File::short_path_part(
                         &component.as_os_str().to_string_lossy(),
                         is_innermost_dir,
-                    )
+                    ))
+                } else if !is_dots_added {
+                    is_dots_added = true;
+                    Some(DOTS.to_string())
                 } else {
-                    DOTS.to_string()
+                    None
                 }
             })
             .join(join_symbol);
 
-        format!("{short_path}{join_symbol}")
+        if component_count > 0 
+                && (is_reversed || filtered_parent != parent) {
+            format!("{join_symbol}{short_path}")
+        } else {
+            short_path
+        }
     }
 
     pub fn short_path_part(e: &str, is_ext_size: bool) -> String {
@@ -67,10 +90,14 @@ impl File {
         let max_len = if is_ext_size { 20 } else { 10 };
 
         if e.len() > max_len {
-            let a = &e[..max_len / 2];
-            let b = &e[e.len() - max_len / 2..];
+            let a: String = e.chars().take(max_len / 2).collect();
+            let b: String = e
+                .chars()
+                .skip(e.len() - max_len / 2)
+                .take(max_len)
+                .collect();
 
-            format!("{a}{DOTS}{b}")
+            a + DOTS + &b
         } else {
             e.to_owned()
         }
@@ -107,11 +134,7 @@ impl File {
     }
 
     pub(crate) fn is_dir(&self) -> bool {
-        // I thought I wanted to use `PathBuf::is_dir` here, but that actually checks the FileSystem
-        // and your version was avoiding the FS (which I like!)
-        // At the moment I added in the original path so we can check if it ended with a `/`
-        // May refactor this later!
-        self.original.ends_with(std::path::MAIN_SEPARATOR)
+        self.is_dir
     }
 
     pub(crate) fn ext(&self) -> Option<&str> {

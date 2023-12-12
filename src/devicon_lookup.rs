@@ -110,11 +110,15 @@ impl ParsedLine {
     }
 
     fn get_name(&self, flag_long: bool, flag_nameshort: bool, flag_align: Option<usize>) -> String {
-        let name = if flag_nameshort {
+        let mut name = if flag_nameshort {
             File::short_path_part(self.file.name(), true)
         } else {
             self.file.name().to_owned()
         };
+        
+        if self.file.is_dir() {
+            name.push(std::path::MAIN_SEPARATOR);
+        }
 
         if flag_long {
             let out_name = match flag_align {
