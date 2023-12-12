@@ -56,7 +56,7 @@ impl File {
             })
             .join(join_symbol);
 
-        format!("{short_path}/")
+        format!("{short_path}{join_symbol}")
     }
 
     pub fn short_path_part(e: &str, is_ext_size: bool) -> String {
