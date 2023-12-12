@@ -95,27 +95,23 @@ impl File {
     }
 
     pub fn extension_is_one_of(&self, choices: &[&str]) -> bool {
-        // match &self.ext {
-        //     Some(ext) => choices.contains(&&ext[..]),
-        //     None => false,
-        // }
-        todo!()
+        match &self.ext() {
+            Some(ext) => choices.contains(&&ext[..]),
+            None => false,
+        }
     }
     pub fn extension_matches_set(&self, set: &RegexSet) -> bool {
-        // match &self.ext {
-        //     Some(ext) => set.is_match(&&ext[..]),
-        //     None => false,
-        // }
-        todo!()
+        match &self.ext() {
+            Some(ext) => set.is_match(ext),
+            None => false,
+        }
     }
 
     pub fn name_is_one_of(&self, choices: &[&str]) -> bool {
-        // choices.contains(&&self.name[..])
-        todo!()
+        choices.contains(&self.name())
     }
     pub fn name_matches_set(&self, set: &RegexSet) -> bool {
-        // set.is_match(&&self.name[..])
-        todo!()
+        set.is_match(self.name())
     }
 
     pub(crate) fn name(&self) -> &str {
@@ -125,7 +121,7 @@ impl File {
 
         // The second unwrap is because `PathBuf` works on `OsString` which is not guaranteed to be valid unicode
         // This library only works on valid unicode, so we unwrap here to panic if it's not valid unicode
-        &self.path.file_name().unwrap().to_str().unwrap()
+        self.path.file_name().unwrap().to_str().unwrap()
     }
 
     pub(crate) fn is_dir(&self) -> bool {
@@ -150,7 +146,6 @@ impl File {
 
     pub(crate) fn path(&self) -> &str {
         // PathBug::parent returns everything but the last component of the path
-
         self.path.parent().unwrap().to_str().unwrap()
     }
 
