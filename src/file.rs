@@ -24,16 +24,16 @@ impl File {
         let parent = self.path.parent().unwrap();
         let component_count = parent.components().count();
 
-        let iter: Box<dyn Iterator<Item = _>> = if is_reversed {
-            Box::new(parent.components().rev())
-        } else {
-            Box::new(parent.components())
-        };
-
         let join_symbol = if is_reversed {
             "<"
         } else {
             std::path::MAIN_SEPARATOR_STR
+        };
+
+        let iter: Box<dyn Iterator<Item = _>> = if is_reversed {
+            Box::new(parent.components().rev())
+        } else {
+            Box::new(parent.components())
         };
 
         let short_path = iter
@@ -67,14 +67,10 @@ impl File {
         let max_len = if is_ext_size { 20 } else { 10 };
 
         if e.len() > max_len {
-            let a: String = e.chars().take(max_len / 2).collect();
-            let b: String = e
-                .chars()
-                .skip(e.len() - max_len / 2)
-                .take(max_len)
-                .collect();
+            let a = &e[..max_len / 2];
+            let b = &e[e.len() - max_len / 2..];
 
-            a + DOTS + &b
+            format!("{a}{DOTS}{b}")
         } else {
             e.to_owned()
         }
