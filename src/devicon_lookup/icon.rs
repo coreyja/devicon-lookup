@@ -347,7 +347,7 @@ pub fn find_direcotry(filename: &str) -> Option<&char> {
     DIRECTORY_MAP.get(filename)
 }
 
-pub fn find_extension<'a>(extension: &'a Option<String>) -> Option<&'a char> {
+pub fn find_extension<'a>(extension: &'a Option<&str>) -> Option<&'a char> {
     match extension {
         Some(e) => EXTENSION_MAP.get(e),
         None => None,
