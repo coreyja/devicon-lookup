@@ -51,9 +51,6 @@ impl File {
         let short_path = iter
             .enumerate()
             .filter_map(|(i, component)| -> Option<String> {
-                if component == Component::RootDir {
-                    return None;
-                }
                 if i < save_n_first_dir || component_count - i <= save_n_last_dir {
                     let is_innermost_dir = if is_reversed {
                         i == 0
