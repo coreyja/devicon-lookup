@@ -126,9 +126,18 @@ impl File {
         ext.to_str()
     }
 
-    pub(crate) fn path(&self) -> &str {
+    pub(crate) fn path(&self) -> String {
         // PathBug::parent returns everything but the last component of the path
-        self.path.parent().unwrap().to_str().unwrap()
+        let parent = self.path.parent().unwrap().to_str().unwrap();
+
+        // This is to pass the existing tests
+        // If the parent is empty we want to leave it off,
+        // otherwise we want to add a `/` to the end
+        if parent.is_empty() {
+            parent.to_string()
+        } else {
+            format!("{}/", parent)
+        }
     }
 
     pub(crate) fn full_path(&self) -> &str {
