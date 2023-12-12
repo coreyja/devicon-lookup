@@ -1,6 +1,6 @@
-use std::path::PathBuf;
-
+use itertools::Itertools;
 use regex::RegexSet;
+use std::path::PathBuf;
 
 #[derive(Debug)]
 pub struct File {
@@ -21,63 +21,45 @@ impl File {
     }
 
     pub fn short_path(&self, is_reversed: bool) -> String {
-        todo!()
-        // let mut c = 0;
-        // let mut new_path: Vec<String> = Vec::new();
+        let component_count = self.path.components().count();
 
-        // let arr: Vec<String> = self
-        //     .path
-        //     .split(std::path::MAIN_SEPARATOR_STR)
-        //     .filter(|&x| !x.is_empty())
-        //     .map(str::to_string)
-        //     .collect();
+        let iter: Box<dyn Iterator<Item = _>> = if is_reversed {
+            Box::new(self.path.components().rev())
+        } else {
+            Box::new(self.path.components())
+        };
 
-        // if arr.len() > 0 {
-        //     new_path.push("".to_string());
-        // }
+        let join_symbol = if is_reversed {
+            "<"
+        } else {
+            std::path::MAIN_SEPARATOR_STR
+        };
 
-        // let iter: Box<dyn Iterator<Item = _>> = if is_reversed {
-        //     Box::new(arr.iter().rev().enumerate())
-        // } else {
-        //     Box::new(arr.iter().enumerate())
-        // };
+        iter.enumerate()
+            .map(|(i, component)| -> String {
+                if i < 3 || component_count - i <= 2 {
+                    let is_innermost_dir = if is_reversed {
+                        i == 0
+                    } else {
+                        i == component_count - 1
+                    };
 
-        // for (e, is_last_element) in iter.map(|(i, e)| (e, i == arr.len() - 1)) {
-        //     let is_first_dir: bool = if new_path.len() == 1 && is_reversed {
-        //         true
-        //     } else if is_last_element {
-        //         true
-        //     } else {
-        //         false
-        //     };
-
-        //     if new_path.len() < 3 {
-        //         new_path.push(File::short_path_part(e, is_first_dir));
-        //     } else if new_path.len() == 3 && (arr.len() - c > 2) {
-        //         new_path.push(DOTS.to_string());
-        //     } else if arr.len() - c <= 2 && !e.is_empty() {
-        //         new_path.push(File::short_path_part(e, is_first_dir));
-        //     }
-
-        //     c += 1;
-        // }
-
-        // let join_symbol;
-        // if is_reversed {
-        //     join_symbol = "<";
-        // } else {
-        //     join_symbol = std::path::MAIN_SEPARATOR_STR;
-        // }
-
-        // new_path
-        //     .iter()
-        //     .map(|x| x.to_string())
-        //     .collect::<Vec<_>>()
-        //     .join(join_symbol)
+                    File::short_path_part(
+                        &component.as_os_str().to_string_lossy(),
+                        is_innermost_dir,
+                    )
+                } else {
+                    DOTS.to_string()
+                }
+            })
+            .join(join_symbol)
     }
 
     pub fn short_path_part(e: &str, is_ext_size: bool) -> String {
-        let r: String;
+        // I removed the `let r` bit since we can just return the result of the `if` directly
+        // In Rust you can use the return value of `if` as a value, which is nice for returning things
+        // conditionally filling in a variable
+
         let max_len = if is_ext_size { 20 } else { 10 };
 
         if e.len() > max_len {
@@ -87,11 +69,11 @@ impl File {
                 .skip(e.len() - max_len / 2)
                 .take(max_len)
                 .collect();
-            r = a + DOTS + &b;
+
+            a + DOTS + &b
         } else {
-            r = e.to_owned()
+            e.to_owned()
         }
-        r
     }
 
     pub fn extension_is_one_of(&self, choices: &[&str]) -> bool {
