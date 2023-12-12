@@ -2,8 +2,7 @@ use ansi_term::Style;
 use std::io::{self, Write};
 
 use crate::args::Args;
-pub use crate::devicon_lookup::color::FileColours;
-pub use crate::devicon_lookup::icon::{FileIcon, Icons};
+pub use crate::devicon_lookup::icon::Icons;
 pub use crate::file::File;
 pub use crate::file_ext::FileExtensions;
 
@@ -71,14 +70,12 @@ impl<'a> Line<'a> {
 
 impl ParsedLine {
     fn symbol(&self) -> char {
-        let file_icon = Box::new(FileExtensions);
-
         let icon = icon::find_exact_name(&self.file.name());
 
         if icon.is_none() && self.file.is_dir() {
             return *icon::find_direcotry(&self.file.name()).unwrap_or(&Icons::Dir.value());
         }
-        if let Some(icon) = file_icon.custom_match(&self.file) {
+        if let Some(icon) = FileExtensions::custom_match(&self.file) {
             return icon;
         } else if icon.is_none() && self.file.ext().is_some() {
             return *icon::find_extension(&self.file.ext()).unwrap_or(&Icons::File.value());
@@ -87,12 +84,11 @@ impl ParsedLine {
     }
 
     fn color(&self) -> Style {
-        let file_color = Box::new(FileExtensions);
         let style: Option<Style>;
         if self.file.is_dir() {
-            style = file_color.color_dir(&self.file);
+            style = FileExtensions::color_dir(&self.file);
         } else {
-            style = file_color.color_file(&self.file);
+            style = FileExtensions::color_file(&self.file);
         }
         return color::iconify_style(style.unwrap_or_default());
     }

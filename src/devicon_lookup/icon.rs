@@ -2,8 +2,6 @@ pub use crate::file::File;
 pub use crate::file_ext::FileExtensions;
 use phf::phf_map;
 
-use regex::RegexSet;
-
 extern crate lazy_static;
 
 #[derive(Copy, Clone)]
@@ -351,33 +349,5 @@ pub fn find_extension<'a>(extension: &'a Option<&str>) -> Option<&'a char> {
     match extension {
         Some(e) => EXTENSION_MAP.get(e),
         None => None,
-    }
-}
-
-pub trait FileIcon {
-    fn custom_match(&self, file: &File) -> Option<char>;
-}
-
-impl FileIcon for FileExtensions {
-    fn custom_match(&self, file: &File) -> Option<char> {
-        lazy_static! {
-            static ref SET_VIM_NAME: RegexSet = RegexSet::new(&[r".*vim.*",]).unwrap();
-            static ref SET_VIM_EXT: RegexSet = RegexSet::new(&[r".*vim.*",]).unwrap();
-            static ref SET_SH_EXT: RegexSet =
-                RegexSet::new(&[r".*bash.*", r".*zsh.*", r"^sh_", r"_sh$",]).unwrap();
-        }
-        if self.is_music(file) || self.is_lossless(file) {
-            Some(Icons::Audio.value())
-        } else if self.is_image(file) {
-            Some(Icons::Image.value())
-        } else if self.is_video(file) {
-            Some(Icons::Video.value())
-        } else if file.extension_matches_set(&SET_VIM_EXT) || file.name_matches_set(&SET_VIM_NAME) {
-            Some('\u{e62b}')
-        } else if file.extension_matches_set(&SET_SH_EXT) {
-            Some('\u{ebc7}')
-        } else {
-            None
-        }
     }
 }
