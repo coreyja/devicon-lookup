@@ -21,12 +21,13 @@ impl File {
     }
 
     pub fn short_path(&self, is_reversed: bool) -> String {
-        let component_count = self.path.components().count();
+        let parent = self.path.parent().unwrap();
+        let component_count = parent.components().count();
 
         let iter: Box<dyn Iterator<Item = _>> = if is_reversed {
-            Box::new(self.path.components().rev())
+            Box::new(parent.components().rev())
         } else {
-            Box::new(self.path.components())
+            Box::new(parent.components())
         };
 
         let join_symbol = if is_reversed {
@@ -35,7 +36,8 @@ impl File {
             std::path::MAIN_SEPARATOR_STR
         };
 
-        iter.enumerate()
+        let short_path = iter
+            .enumerate()
             .map(|(i, component)| -> String {
                 if i < 3 || component_count - i <= 2 {
                     let is_innermost_dir = if is_reversed {
@@ -52,7 +54,9 @@ impl File {
                     DOTS.to_string()
                 }
             })
-            .join(join_symbol)
+            .join(join_symbol);
+
+        format!("{short_path}/")
     }
 
     pub fn short_path_part(e: &str, is_ext_size: bool) -> String {
