@@ -1,5 +1,20 @@
 # Change Log
 
+## [Unreleased] - ReleaseDate
+
+### Features
+
+- More Icons, Colored Icons, Shorter Directoies and more!
+  - Github PR[#951](https://github.com/coreyja/devicon-lookup/pull/901)
+
+### New Contributors
+
+@Shuraken007 made their first contribution in #951
+
+### Maintenance
+
+- Various Dependencies Updates
+
 ## [0.9.1] - 2023-07-23
 
 ### Bugfix
