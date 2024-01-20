@@ -8,7 +8,6 @@ mod integration {
     #[test]
     fn calling_devicon_lookup_without_strip_color_single_file() {
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-        cmd.arg("--");
         cmd.write_stdin("test.rs".blue().to_string())
             .assert()
             .stdout(format!(" {}\n", "test.rs".blue()));
