@@ -10,7 +10,7 @@ mod integration {
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
         cmd.write_stdin("test.rs".blue().to_string())
             .assert()
-            .stdout(" \x1b[34mtest.rs\x1B[0m\n");
+            .stdout(format!(" {}\n", "test.rs".blue()));
     }
 
     #[test]
@@ -19,7 +19,7 @@ mod integration {
         cmd.arg("--color");
         cmd.write_stdin("test.rs".blue().to_string())
             .assert()
-            .stdout(" \x1b[34mtest.rs\x1B[0m\n");
+            .stdout(format!(" {}\n", "test.rs".blue()));
     }
 
     #[test]
