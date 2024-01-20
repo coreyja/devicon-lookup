@@ -1,5 +1,3 @@
-pub use crate::file::File;
-pub use crate::file_ext::FileExtensions;
 use phf::phf_map;
 
 extern crate lazy_static;
@@ -349,6 +347,6 @@ pub fn find_directory(filename: &str) -> Option<char> {
     DIRECTORY_MAP.get(filename).copied()
 }
 
-pub fn find_extension<'a>(extension: &str) -> Option<char> {
+pub fn find_extension(extension: &str) -> Option<char> {
     EXTENSION_MAP.get(extension).copied()
 }

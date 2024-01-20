@@ -10,10 +10,10 @@ extern crate lazy_static;
 impl FileExtensions {
     pub(crate) fn custom_match(file: &File) -> Option<char> {
         lazy_static! {
-            static ref SET_VIM_NAME: RegexSet = RegexSet::new(&[r".*vim.*",]).unwrap();
-            static ref SET_VIM_EXT: RegexSet = RegexSet::new(&[r".*vim.*",]).unwrap();
+            static ref SET_VIM_NAME: RegexSet = RegexSet::new([r".*vim.*",]).unwrap();
+            static ref SET_VIM_EXT: RegexSet = RegexSet::new([r".*vim.*",]).unwrap();
             static ref SET_SH_EXT: RegexSet =
-                RegexSet::new(&[r".*bash.*", r".*zsh.*", r"^sh_", r"_sh$",]).unwrap();
+                RegexSet::new([r".*bash.*", r".*zsh.*", r"^sh_", r"_sh$",]).unwrap();
         }
 
         if FileExtensions::is_music(file) || FileExtensions::is_lossless(file) {
@@ -163,7 +163,7 @@ impl FileExtensions {
 
     pub fn is_config(file: &File) -> bool {
         lazy_static! {
-            static ref SET_EXT: RegexSet = RegexSet::new(&[
+            static ref SET_EXT: RegexSet = RegexSet::new([
                 r".*ignore",
                 r".*settings.*",
                 r".*theme.*",
@@ -172,7 +172,7 @@ impl FileExtensions {
             ])
             .unwrap();
             static ref SET_NAME: RegexSet =
-                RegexSet::new(&[r".*settings.*", r".*theme.*", r".*settings.*", r".*theme.*",])
+                RegexSet::new([r".*settings.*", r".*theme.*", r".*settings.*", r".*theme.*",])
                     .unwrap();
         }
         file.extension_is_one_of(&[
@@ -203,17 +203,13 @@ impl FileExtensions {
     }
 
     pub fn is_compiled(file: &File) -> bool {
-        if file.extension_is_one_of(&["class", "elc", "hi", "o", "pyc", "zwc", "ko"]) {
-            true
-        } else {
-            false
-        }
+        file.extension_is_one_of(&["class", "elc", "hi", "o", "pyc", "zwc", "ko"])
     }
 
     pub fn is_script(file: &File) -> bool {
         lazy_static! {
             static ref SET_SH_EXT: RegexSet =
-                RegexSet::new(&[r".*bash.*", r".*zsh.*", r"^sh_", r"_sh$",]).unwrap();
+                RegexSet::new([r".*bash.*", r".*zsh.*", r"^sh_", r"_sh$",]).unwrap();
         }
         file.extension_is_one_of(&[
             "bashrc",
@@ -304,8 +300,8 @@ impl FileExtensions {
 
     pub fn is_vim(file: &File) -> bool {
         lazy_static! {
-            static ref NAME_EXT: RegexSet = RegexSet::new(&[r".*vim.*",]).unwrap();
-            static ref SET_EXT: RegexSet = RegexSet::new(&[r".*vim.*",]).unwrap();
+            static ref NAME_EXT: RegexSet = RegexSet::new([r".*vim.*",]).unwrap();
+            static ref SET_EXT: RegexSet = RegexSet::new([r".*vim.*",]).unwrap();
         }
         file.name_matches_set(&NAME_EXT) || file.extension_matches_set(&SET_EXT)
     }
@@ -316,21 +312,21 @@ impl FileExtensions {
 
     pub fn is_folder_with_language_files(file: &File) -> bool {
         lazy_static! {
-            static ref SET_NAME: RegexSet = RegexSet::new(&[r".*test.*",]).unwrap();
+            static ref SET_NAME: RegexSet = RegexSet::new([r".*test.*",]).unwrap();
         }
         file.name_is_one_of(&["src", "lib"]) || file.name_matches_set(&SET_NAME)
     }
 
     pub fn is_folder_with_exe_files(file: &File) -> bool {
         lazy_static! {
-            static ref SET_NAME: RegexSet = RegexSet::new(&[r".*script.*",]).unwrap();
+            static ref SET_NAME: RegexSet = RegexSet::new([r".*script.*",]).unwrap();
         }
         file.name_is_one_of(&["target", "bin"]) || file.name_matches_set(&SET_NAME)
     }
 
     pub fn is_folder_with_document_files(file: &File) -> bool {
         lazy_static! {
-            static ref SET_NAME: RegexSet = RegexSet::new(&[r"man.*",]).unwrap();
+            static ref SET_NAME: RegexSet = RegexSet::new([r"man.*",]).unwrap();
         }
         file.name_is_one_of(&["doc"]) || file.name_matches_set(&SET_NAME)
     }
