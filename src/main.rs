@@ -3,26 +3,22 @@ extern crate lazy_static;
 #[macro_use]
 extern crate serde_derive;
 
+use crate::args::Args;
 use docopt::Docopt;
 use lines::{IntoMaybeUt8Lines, MaybeUtf8LinesError};
 use miette::IntoDiagnostic;
 use std::io::{self};
 
-mod devicon_lookup;
-use devicon_lookup::*;
-
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 const USAGE: &str = include_str!("USAGE.txt");
 
+mod args;
+mod file;
+mod file_ext;
 mod lines;
 
-#[derive(Debug, Deserialize)]
-struct Args {
-    flag_color: bool,
-    flag_version: bool,
-    flag_regex: Option<String>,
-    flag_prefix: Option<String>,
-}
+mod devicon_lookup;
+use devicon_lookup::*;
 
 struct Cli {
     args: Args,
@@ -70,7 +66,7 @@ impl Cli {
                     };
 
                     match line.parse() {
-                        Ok(p) => p.print_with_symbol(),
+                        Ok(p) => p.print_with_symbol(&self.args),
                         Err(e) => panic!("{}", e),
                     };
                 }

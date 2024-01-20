@@ -10,7 +10,7 @@ mod integration {
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
         cmd.write_stdin("test.rs".blue().to_string())
             .assert()
-            .stdout(" \x1b[34mtest.rs\x1B[0m\n");
+            .stdout(" \x1b[34mtest.rs\x1B[0m\n");
     }
 
     #[test]
@@ -28,6 +28,6 @@ mod integration {
         cmd.arg("-c");
         cmd.write_stdin(format!("{}\n{}", "test.rs".blue(), "test.rb".red()))
             .assert()
-            .stdout(" \x1b[34mtest.rs\x1B[0m\n \x1b[31mtest.rb\x1b[0m\n");
+            .stdout(" \x1b[34mtest.rs\x1B[0m\n \x1b[31mtest.rb\x1b[0m\n");
     }
 }

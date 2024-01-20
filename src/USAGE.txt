@@ -10,6 +10,36 @@
 
    --version                      Show version.
 
+   -i --iconcolor
+   Colorize icons
+
+   -l --long
+   long format output: icon filename path
+  `Readme.md   /src/proj/`
+
+   -n --nameshort
+   Shorten path to filename only
+
+   -d --dirshort
+   Shorten path with compact dirs
+   
+   -D --dirshortreverse
+   Shorten path in reversed order
+   `Readme.md   <.release<coc-…tier<…<exte…ions<coc<.config`
+
+   --nodir
+   only file name outputed
+
+   -a --align <num>
+   align name with spaces
+    `-a 5` '/file/t'  -> 't    /file'
+    `-a 5` '/file/ta' -> 'ta   /file'
+
+   -f --fzf
+   Output 2 arguments: full-path, path with icon, separated by Delimiter '!'
+   Use `-d!`, `--with-nth 2`, as fzf arguments
+   `fd | devicon -idf | fzf --ansi -d! --with-nth 2 | cut -f1 -d!`
+
    -c --color
    Strip ANSI color codes from each line before processing them
    The original string with ANSI codes preserved is output
@@ -23,3 +53,6 @@
    Regex's must be valid based on the Rust `regex` crate
    The regex is expected to have a single capture group,
    which contains the filename. Extra capture groups are ignored
+
+   -s --substitute
+   don't remove original text, substitute with iconed instead
