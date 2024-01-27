@@ -113,7 +113,7 @@ impl ParsedLine {
 
     fn get_name(&self, flag_long: bool, flag_nameshort: bool, flag_align: Option<usize>) -> String {
         let Some(name) = self.file.name() else {
-            return "".to_string();
+            return self.original.clone();
         };
         let mut name = if flag_nameshort {
             File::short_path_part(name, true)
