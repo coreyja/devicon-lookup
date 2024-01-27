@@ -10,9 +10,9 @@ mod integration {
         colored::control::set_override(true);
 
         let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
-        cmd.write_stdin(format!("{}", "test.rs".blue()))
+        cmd.write_stdin("test.rs".blue().to_string())
             .assert()
-            .stdout(format!(" {}\n", "test.rs".blue()));
+            .stdout(" \x1b[34mtest.rs\x1B[0m\n");
     }
 
     #[test]
@@ -23,7 +23,7 @@ mod integration {
         cmd.arg("--color");
         cmd.write_stdin("test.rs".blue().to_string())
             .assert()
-            .stdout(format!(" {}\n", "test.rs".blue()));
+            .stdout(" \x1b[34mtest.rs\x1B[0m\n");
     }
 
     #[test]
@@ -34,6 +34,6 @@ mod integration {
         cmd.arg("-c");
         cmd.write_stdin(format!("{}\n{}", "test.rs".blue(), "test.rb".red()))
             .assert()
-            .stdout(format!(" {}\n {}\n", "test.rs".blue(), "test.rb".red()));
+            .stdout(" \x1b[34mtest.rs\x1B[0m\n \x1b[31mtest.rb\x1b[0m\n");
     }
 }
