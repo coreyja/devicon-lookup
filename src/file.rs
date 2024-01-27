@@ -113,20 +113,27 @@ impl File {
     }
 
     pub fn name_is_one_of(&self, choices: &[&str]) -> bool {
-        choices.contains(&self.name())
-    }
-    pub fn name_matches_set(&self, set: &RegexSet) -> bool {
-        set.is_match(self.name())
+        let Some(name) = self.name() else {
+            return false;
+        };
+        choices.contains(&name)
     }
 
-    pub(crate) fn name(&self) -> &str {
+    pub fn name_matches_set(&self, set: &RegexSet) -> bool {
+        let Some(name) = self.name() else {
+            return false;
+        };
+        set.is_match(name)
+    }
+
+    pub(crate) fn name(&self) -> Option<&str> {
         // `file_name()` here _might_ not return something if the String is only `..`
         // but we are choosing to ignore that error here and unwrap. We will panic on `..` input
         // I believe this would have also panicked on the previous impl because the regex would't have matched
 
         // The second unwrap is because `PathBuf` works on `OsString` which is not guaranteed to be valid unicode
         // This library only works on valid unicode, so we unwrap here to panic if it's not valid unicode
-        self.path.file_name().unwrap().to_str().unwrap()
+        self.path.file_name()?.to_str()
     }
 
     pub(crate) fn is_dir(&self) -> bool {

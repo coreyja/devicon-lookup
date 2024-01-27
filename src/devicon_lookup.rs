@@ -74,12 +74,14 @@ impl ParsedLine {
             return icon;
         }
 
-        if let Some(icon) = icon::find_exact_name(self.file.name()) {
-            return icon;
-        }
+        if let Some(name) = self.file.name() {
+            if let Some(icon) = icon::find_exact_name(name) {
+                return icon;
+            }
 
-        if self.file.is_dir() {
-            return icon::find_directory(self.file.name()).unwrap_or(Icons::Dir.value());
+            if self.file.is_dir() {
+                return icon::find_directory(name).unwrap_or(Icons::Dir.value());
+            }
         }
 
         if let Some(ext) = self.file.ext() {
@@ -110,10 +112,13 @@ impl ParsedLine {
     }
 
     fn get_name(&self, flag_long: bool, flag_nameshort: bool, flag_align: Option<usize>) -> String {
+        let Some(name) = self.file.name() else {
+            return "".to_string();
+        };
         let mut name = if flag_nameshort {
-            File::short_path_part(self.file.name(), true)
+            File::short_path_part(name, true)
         } else {
-            self.file.name().to_owned()
+            name.to_owned()
         };
 
         if self.file.is_dir() {
