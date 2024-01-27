@@ -14,11 +14,12 @@ pub const DOTS: &str = "…";
 impl File {
     pub fn new(full_path: &str) -> File {
         let original = full_path.to_string();
+        let path = PathBuf::from(full_path);
 
         File {
             original,
-            path: PathBuf::from(full_path),
-            is_dir: full_path.ends_with(std::path::MAIN_SEPARATOR),
+            is_dir: path.is_dir(),
+            path,
         }
     }
 
