@@ -1,5 +1,12 @@
 # Change Log
 
+## Unreleased - ReleaseDate
+
+### Fixes
+
+- Removed unwrap when `PathBuf::file_name` returned none
+- Improve Directory support by leaning on PathBuf's impl
+
 ## [0.10.0] - 2024-01-20
 
 ### Features
