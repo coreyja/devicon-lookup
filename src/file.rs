@@ -16,9 +16,11 @@ impl File {
         let original = full_path.to_string();
         let path = PathBuf::from(full_path);
 
+        let is_dir = full_path.ends_with(std::path::MAIN_SEPARATOR) || path.is_dir();
+
         File {
             original,
-            is_dir: path.is_dir(),
+            is_dir,
             path,
         }
     }
