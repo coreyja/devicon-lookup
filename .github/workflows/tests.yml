@@ -1,0 +1,57 @@
+name: Rust Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v2
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: "v1-rust"
+      - name: Build | Lint
+        run: cargo clippy --all-targets --no-deps
+  doc:
+    name: Doc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v2
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: "v1-rust"
+      - name: Cargo Doc
+        run: cargo doc --workspace --no-deps
+  test:
+    name: Test
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+        rust:
+          - stable
+          - nightly
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v2
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: "v1-rust"
+      - name: Test
+        run: cargo test --all-targets
