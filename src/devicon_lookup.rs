@@ -74,13 +74,17 @@ impl ParsedLine {
             return icon;
         }
 
+        if self.file.is_dir() {
+            return self
+                .file
+                .name()
+                .and_then(icon::find_directory)
+                .unwrap_or(Icons::Dir.value());
+        }
+
         if let Some(name) = self.file.name() {
             if let Some(icon) = icon::find_exact_name(name) {
                 return icon;
-            }
-
-            if self.file.is_dir() {
-                return icon::find_directory(name).unwrap_or(Icons::Dir.value());
             }
         }
 

@@ -8,6 +8,12 @@ mod integration {
     use temp_dir::TempDir;
 
     #[test]
+    fn root_dir_test() {
+        let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
+        cmd.write_stdin("/".to_string()).assert().stdout(" /\n");
+    }
+
+    #[test]
     fn local_dir_test() {
         let d = TempDir::new().unwrap();
         create_dir(d.path().join("test_dir")).unwrap();
