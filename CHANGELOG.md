@@ -1,5 +1,13 @@
 # Change Log
 
+## Unreleased - ReleaseDate
+
+### Fixes
+
+- Remove more unwraps to fix issues with elements without
+  filenames or parentes
+- Look for directory before searching anything about the filename
+
 ## 0.10.1 - 2024-01-27
 
 ### Fixes

@@ -53,6 +53,8 @@
    Regex's must be valid based on the Rust `regex` crate
    The regex is expected to have a single capture group,
    which contains the filename. Extra capture groups are ignored
+   When this option is used the original line is replaced with the capture group
+   is this is not desired consider adding `--substitute`
 
    -s --substitute
    don't remove original text, substitute with iconed instead

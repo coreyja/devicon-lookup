@@ -4,6 +4,7 @@ extern crate assert_cmd;
 mod integration {
     use assert_cmd::Command;
     use predicates::prelude::*;
+    use temp_dir::TempDir;
 
     #[test]
     fn calling_devicon_lookup_with_a_catchall_regex_works() {
@@ -24,6 +25,33 @@ mod integration {
             .write_stdin("test.rs: someline of the file".to_string())
             .assert()
             .stdout(" test.rs: someline of the file\n");
+    }
+
+    #[test]
+    fn calling_devicon_lookup_with_zoxide_score_syntax_and_regex_works() {
+        let d = TempDir::new().unwrap();
+        let root_path = d.path().to_str().unwrap().to_string();
+        std::fs::create_dir(d.path().join("one")).unwrap();
+        std::fs::create_dir_all(d.path().join("foo").join("bar")).unwrap();
+
+        let mut cmd = Command::cargo_bin("devicon-lookup").unwrap();
+        cmd.current_dir(d.path())
+            .arg("--regex")
+            .arg(r"\d (.*)")
+            .arg("-s")
+            .write_stdin(format!(
+                "  16.0 {root_path}/one
+   8.0 {root_path}/foo
+   4.0 {root_path}/foo/bar
+"
+            ))
+            .assert()
+            .stdout(format!(
+                "  16.0  {root_path}/one/
+   8.0  {root_path}/foo/
+   4.0  {root_path}/foo/bar/
+",
+            ));
     }
 
     #[test]
