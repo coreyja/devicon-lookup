@@ -26,7 +26,11 @@ impl File {
     }
 
     pub fn short_path(&self, is_reversed: bool) -> String {
-        let parent = self.path.parent().unwrap();
+        let parent = self.path.parent();
+
+        let Some(parent) = parent else {
+            return "/".to_string();
+        };
 
         let filtered_parent = parent
             .components()
@@ -138,22 +142,20 @@ impl File {
     }
 
     pub(crate) fn ext(&self) -> Option<&str> {
-        // `PathBuf::extension` is what we want but returns an `OsString` again
-        // This `map` would work great! But I wanted to show off `?` to return `None` early
-        // self.path.extension().map(|x| x.to_str().unwrap())
-
-        // Here `ext` is an `OsString`! If `extension()` returns `None` then this function
-        // will early return `None`. I like this style of `map` often since it looks nicer to me personally
-        let ext = self.path.extension()?;
-
-        ext.to_str()
+        self.path.extension()?.to_str()
     }
 
     pub(crate) fn path(&self) -> String {
         // PathBug::parent returns everything but the last component of the path
-        let parent = self.path.parent().map(|os| os.to_str().unwrap());
+        let parent = self
+            .path
+            .parent()
+            .map(|os| {
+                os.to_str()
+                    .expect("All paths should be valid UTF-8 since we divert non-UTF-8 beforehand")
+            })
+            .map(String::from);
 
-        // This is to pass the existing tests
         // If the parent is empty we want to leave it off,
         // otherwise we want to add a `/` to the end
         if let Some(parent) = parent {
