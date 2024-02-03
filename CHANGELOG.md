@@ -8,6 +8,10 @@
   filenames or parentes
 - Look for directory before searching anything about the filename
 
+### Maintenance
+
+- Various Dependencies Updates
+
 ## 0.10.1 - 2024-01-27
 
 ### Fixes
